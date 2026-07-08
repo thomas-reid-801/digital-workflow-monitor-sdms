@@ -1,0 +1,59 @@
+{
+  "asOf": "2026-07-08",
+  "burnPerDevPerWeek": 2,
+  "reviewMinutesPerItem": 17.5,
+  "jiraBase": "https://trekbikes.atlassian.net/issues/?jql=",
+  "projects": {
+    "TBN": {
+      "label": "TBN — Trekbikes.com",
+      "file": "tbn.html",
+      "noteam": { "todo": 38, "ana": 3, "rfd": 0 },
+      "pods": [
+        { "name": "Pod B", "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-11", "devs": 4, "todo": 11, "genuine": 10, "ana": 2, "sdm": 0, "rfd": 19, "tgt": 12,
+          "back": [10, 0, 7], "anaOld": 2, "rfdOld": 63,
+          "auto": ["TBN-13562","TBN-16234","TBN-18871","TBN-19234","TBN-19516","TBN-19596","TBN-19597","TBN-19598","TBN-19599","TBN-19735"],
+          "flag": ["TBN-19715"] },
+        { "name": "Pod C", "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-12", "devs": 3, "todo": 17, "genuine": 17, "ana": 5, "sdm": 0, "rfd": 12, "tgt": 9,
+          "back": [13, 5, 4], "anaOld": 19, "rfdOld": 72,
+          "auto": ["TBN-13631","TBN-14145","TBN-16124","TBN-16125","TBN-16126","TBN-16403","TBN-16865","TBN-16881","TBN-16888","TBN-20215","TBN-7496"],
+          "flag": [] },
+        { "name": "Pod D", "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-13", "devs": 5, "todo": 17, "genuine": 16, "ana": 4, "sdm": 0, "rfd": 6, "tgt": 15,
+          "back": [10, 10, 2], "anaOld": 19, "rfdOld": 49,
+          "auto": ["TBN-10493","TBN-14190","TBN-14202","TBN-16305","TBN-16724","TBN-17134","TBN-18377","TBN-18657","TBN-18668","TBN-18670","TBN-19063","TBN-19241","TBN-19404","TBN-20160"],
+          "flag": ["TBN-10491"] },
+        { "name": "Pod E", "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-41", "devs": 7, "todo": 24, "genuine": 18, "ana": 2, "sdm": 0, "rfd": 22, "tgt": 21,
+          "back": [10, 7, 4], "anaOld": 1, "rfdOld": 86,
+          "auto": ["TBN-10077","TBN-11849","TBN-14208","TBN-14305","TBN-14330","TBN-14867","TBN-14941","TBN-15211","TBN-15439","TBN-15440","TBN-15441","TBN-15442","TBN-15443","TBN-16511","TBN-19832","TBN-20128","TBN-2154"],
+          "flag": ["TBN-12170","TBN-12665","TBN-15234","TBN-16003","TBN-16595","TBN-16596"] },
+        { "name": "Pod I", "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-43", "devs": 4, "todo": 16, "genuine": 16, "ana": 6, "sdm": 0, "rfd": 7, "tgt": 12,
+          "back": [29, 0, 1], "anaOld": 37, "rfdOld": 70,
+          "auto": ["TBN-12281","TBN-12782","TBN-13070","TBN-15365","TBN-16708","TBN-16859","TBN-17540","TBN-17624","TBN-17633","TBN-17956","TBN-20184","TBN-9334","TBN-9335","TBN-9336","TBN-9417"],
+          "flag": [] }
+      ]
+    },
+    "ASC": {
+      "label": "Ascend (ASC)",
+      "file": "asc.html",
+      "noteam": { "todo": 14, "ana": 9, "rfd": 32 },
+      "pods": [
+        { "name": "Mt Doom", "tid": "00e0a321-1a65-4714-8827-648fd91d2f7e", "devs": 5, "todo": 13, "genuine": 12, "ana": 3, "sdm": 0, "rfd": 5, "tgt": 15,
+          "back": [198, 62, 14], "anaOld": 40, "rfdOld": 37,
+          "auto": ["ASC-1026","ASC-2265","ASC-3685","ASC-4162","ASC-5694","ASC-5736","ASC-6794","ASC-6883","ASC-7213","ASC-7214","ASC-7215","ASC-7415"],
+          "flag": ["ASC-7985"] },
+        { "name": "Neverest", "tid": "35ba84fb-8ac0-4cc3-b2bb-7ee20eba77f0", "devs": 5, "todo": 8, "genuine": 8, "ana": 12, "sdm": 0, "rfd": 7, "tgt": 15,
+          "back": [68, 10, 14], "anaOld": 26, "rfdOld": 56,
+          "auto": ["ASC-899","ASC-4994","ASC-5717","ASC-5773","ASC-5983","ASC-7801"],
+          "flag": [] },
+        { "name": "RockyBluff", "tid": "b922af32-67e8-4e75-b4a5-89e773eaf50e", "devs": 6, "todo": 2, "genuine": 2, "ana": 12, "sdm": 0, "rfd": 3, "tgt": 18,
+          "back": [4, 79, 51], "anaOld": 19, "rfdOld": 12,
+          "auto": ["ASC-1546","ASC-5642"],
+          "flag": [] }
+      ]
+    }
+  },
+  "hygiene": {
+    "ascNoteamRfdKeys": ["ASC-496","ASC-845","ASC-3650","ASC-8619","ASC-8625","ASC-8631","ASC-8632","ASC-8633","ASC-8729","ASC-8730","ASC-8731","ASC-8732","ASC-8734","ASC-8735","ASC-8737","ASC-8738","ASC-8740","ASC-8742","ASC-8744","ASC-8746","ASC-8756","ASC-8757","ASC-8758","ASC-8759","ASC-8760","ASC-8761","ASC-8762","ASC-8763","ASC-8764","ASC-8765","ASC-8766","ASC-9431"],
+    "tbn16487TeamlessCount": 45,
+    "tbn16487QueueSize": 51
+  }
+}
