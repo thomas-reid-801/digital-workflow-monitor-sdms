@@ -380,30 +380,36 @@ def product_page(proj):
       '<div class="actions" style="margin-top:10px"><button class="copy" data-for="%s">Copy note</button></div></div>'
       '</section>' % (memo_id, memo, memo_id) +
       '<footer>Source: Jira (trekbikes.atlassian.net), pulled {{ASOF}}; subtasks excluded; pod = Team field. '
-      'Member counts confirmed by Thomas {{ASOF}}. Model: 2 items/dev/week burn &amp; replenishment; 17.5 min/item pod review. '
-      'Method + item lists: SDM-Queue-Management/progress/funnel-analysis-{{ASOF}}.md. “ASC” must stay quoted in JQL.</footer>')
+      'Member counts confirmed by Thomas 2026-07-08. Model: 2 items/dev/week burn &amp; replenishment; 17.5 min/item pod review. '
+      'Method + item lists: SDM-Queue-Management/progress/funnel-analysis-2026-07-08.md. “ASC” must stay quoted in JQL.</footer>')
     return page("%s Pod Funnel · {{ASOF}}" % proj, body)
 
 def hygiene_block(proj):
+    nt = PROJ_META[proj]["noteam"]
     if proj == "ASC":
+        n_rfd = nt["rfd"]
+        tot_rfd = n_rfd + sum(p["rfd"] for p in PODS["ASC"])
         return ('<div class="callout"><h3>⚠ Data hygiene — the fastest lever</h3>'
-          '<p><strong>32 of ASC’s 47 Ready-for-Dev items have no Team</strong> (mostly the Dedicated Testing-Client set, ASC-8619…8766). '
+          '<p><strong>%d of ASC’s %d Ready-for-Dev items have no Team</strong> (mostly the Dedicated Testing-Client set). '
           'If they’re pod-owned, setting Team closes most of the gap with zero refinement. If deliberately podless, the dashboard should exclude them.</p>'
           '<div class="actions">'
-          '<a class="act primary" href="%s" target="_blank" rel="noopener">No-team Ready-for-Dev ↗ (32)</a>'
-          '<a class="act" href="%s" target="_blank" rel="noopener">No-team To Do ↗ (14)</a>'
+          '<a class="act primary" href="%s" target="_blank" rel="noopener">No-team Ready-for-Dev ↗ (%d)</a>'
+          '<a class="act" href="%s" target="_blank" rel="noopener">No-team To Do ↗ (%d)</a>'
           '</div>'
           '<details><summary>Show queries</summary><div class="jql">%s\n\n%s</div></details></div>'
-          % (jurl(ASC_NOTEAM_RFD), jurl(noteam_jql("ASC", "To Do")), ASC_NOTEAM_RFD, noteam_jql("ASC", "To Do")))
+          % (n_rfd, tot_rfd, jurl(ASC_NOTEAM_RFD), n_rfd, jurl(noteam_jql("ASC", "To Do")), nt["todo"],
+             ASC_NOTEAM_RFD, noteam_jql("ASC", "To Do")))
+    qsize = DATA["hygiene"]["tbn16487QueueSize"]; qteamless = DATA["hygiene"]["tbn16487TeamlessCount"]
     return ('<div class="callout"><h3>⚠ Data hygiene — the priority queue isn’t feeding the boards</h3>'
-      '<p><strong>45 of the 51 items in the ranked priority queue (TBN-16487) have no Team</strong> — including the #1-ranked item, '
-      'TBN-15103 — plus <strong>38 teamless To Do items</strong>. Working these credits no pod. Assign Teams so the curated queue counts.</p>'
+      '<p><strong>%d of the %d items in the ranked priority queue (TBN-16487) have no Team</strong> '
+      '— plus <strong>%d teamless To Do items</strong>. Working these credits no pod. Assign Teams so the curated queue counts.</p>'
       '<div class="actions">'
-      '<a class="act primary" href="%s" target="_blank" rel="noopener">TBN-16487 teamless ↗ (45)</a>'
-      '<a class="act" href="%s" target="_blank" rel="noopener">No-team To Do ↗ (38)</a>'
+      '<a class="act primary" href="%s" target="_blank" rel="noopener">TBN-16487 teamless ↗ (%d)</a>'
+      '<a class="act" href="%s" target="_blank" rel="noopener">No-team To Do ↗ (%d)</a>'
       '</div>'
       '<details><summary>Show queries</summary><div class="jql">%s\n\n%s</div></details></div>'
-      % (jurl(TBN_16487_NOTEAM), jurl(noteam_jql("TBN", "To Do")), TBN_16487_NOTEAM, noteam_jql("TBN", "To Do")))
+      % (qteamless, qsize, nt["todo"], jurl(TBN_16487_NOTEAM), qteamless, jurl(noteam_jql("TBN", "To Do")), nt["todo"],
+         TBN_16487_NOTEAM, noteam_jql("TBN", "To Do")))
 
 def memo_text(proj):
     pods = PODS[proj]
@@ -436,14 +442,17 @@ def memo_text(proj):
     tot_topup = sum(plan(p)["topup"] for p in pods)
     lines.append("• Product total ask: %d items/week moved Backlog → To Do, every week; one-time top-up +%d to give every pod a 2-week buffer." % (tot_i, tot_topup))
     if proj == "ASC":
-        lines.append("• Fastest fix first: 32 Ready-for-Dev items carry no Team (mostly ASC-8619…8766, the Dedicated Testing-Client set). Assigning Teams may close most of the gap with zero new refinement.")
-        lines.append("• Urgency: RockyBluff’s To Do queue is ~1 DAY from empty. When To Do empties, the funnel stalls and Ready-for-Dev cannot recover.")
+        lines.append("• Fastest fix first: %d Ready-for-Dev items carry no Team (mostly the Dedicated Testing-Client set). Assigning Teams may close most of the gap with zero new refinement." % PROJ_META["ASC"]["noteam"]["rfd"])
+        worst = min(pods, key=lambda p: plan(p)["runway"])
+        lines.append("• Urgency: %s’s To Do queue is ~%d DAY%s from empty. When To Do empties, the funnel stalls and Ready-for-Dev cannot recover." % (
+            worst["name"], plan(worst)["runway"], "" if plan(worst)["runway"] == 1 else "S"))
     else:
-        lines.append("• Hygiene: 45 of 51 items in the ranked priority queue (TBN-16487) have no Team — including #1-ranked TBN-15103 — plus 38 teamless To Do items. Assign pods so the queue feeds the boards.")
+        lines.append("• Hygiene: %d of %d items in the ranked priority queue (TBN-16487) have no Team, plus %d teamless To Do items. Assign pods so the queue feeds the boards." % (
+            DATA["hygiene"]["tbn16487TeamlessCount"], DATA["hygiene"]["tbn16487QueueSize"], PROJ_META["TBN"]["noteam"]["todo"]))
     lines.append("• Pod capacity: keeping pace costs each pod %.1f–%.1f h/week of refinement (17.5 min/item)." % (
         min(plan(p)["wk_hours"] for p in pods), max(plan(p)["wk_hours"] for p in pods)))
     lines.append("")
-    lines.append("Detail: SDM-Queue-Management/progress/funnel-analysis-{{ASOF}}.md")
+    lines.append("Detail: SDM-Queue-Management/progress/funnel-analysis-2026-07-08.md")
     return "\n".join(lines)
 
 def parent_page(prod_urls):
@@ -472,6 +481,13 @@ def parent_page(prod_urls):
             prod_urls[proj], PROJ_META[proj]["label"], len(pods), sum(p["devs"] for p in pods), gapped,
             "bad" if g else "", ("−%d" % g) if g else "0", ch, wi, "bad" if mr <= 7 else "", mr)
 
+    tbn_wk = sum(BURN * p["devs"] for p in PODS["TBN"])
+    asc_wk = sum(BURN * p["devs"] for p in PODS["ASC"])
+    asc_nt_rfd = PROJ_META["ASC"]["noteam"]["rfd"]
+    q_teamless = DATA["hygiene"]["tbn16487TeamlessCount"]
+    q_size = DATA["hygiene"]["tbn16487QueueSize"]
+    nt_todo_both = PROJ_META["TBN"]["noteam"]["todo"] + PROJ_META["ASC"]["noteam"]["todo"]
+
     body = (
       '<header>'
       '<div class="eyebrow">SDM Queue Management · pulled from Jira {{ASOF}}</div>'
@@ -482,25 +498,26 @@ def parent_page(prod_urls):
       '<div class="tiles">'
       '<div class="tile"><div class="v bad">−%d</div><div class="k">items behind target across all gapped pods (both products)</div></div>'
       '<div class="tile"><div class="v">%.1f h <small>+ %.1f h/wk</small></div><div class="k">refinement: one-time catch-up + weekly to hold pace</div></div>'
-      '<div class="tile"><div class="v">%d / wk</div><div class="k">items PMs must move Backlog → To Do weekly (TBN 46, ASC 32)</div></div>'
+      '<div class="tile"><div class="v">%d / wk</div><div class="k">items PMs must move Backlog → To Do weekly (TBN %d, ASC %d)</div></div>'
       '<div class="tile"><div class="v bad">≈%d day</div><div class="k">until the first pod (%s) has an empty To Do queue</div></div>'
-      '</div></header>' % (tot_gap, catchup, weekly_h, weekly_i, min_run, min_pod) +
+      '</div></header>' % (tot_gap, catchup, weekly_h, weekly_i, tbn_wk, asc_wk, min_run, min_pod) +
       '<section><h2>Products</h2><div class="plist">%s%s</div></section>' % (prod_card("TBN"), prod_card("ASC")) +
       '<section><h2>Cross-product data hygiene</h2>'
       '<p class="h2note">Work that counts toward no pod because the Team field is empty — the fastest levers in both products.</p>'
       '<div class="callout"><h3>⚠ Assign Teams on these first</h3>'
-      '<p><strong>ASC: 32 Ready-for-Dev items with no Team</strong> (mostly the Dedicated Testing-Client set) — may close most of the ASC gap instantly. '
-      '<strong>TBN: 45 of 51 ranked priority-queue items (TBN-16487) are teamless</strong>, including the #1-ranked item, plus 52 teamless To Do items across both projects.</p>'
+      '<p><strong>ASC: %d Ready-for-Dev items with no Team</strong> (mostly the Dedicated Testing-Client set) — may close most of the ASC gap instantly. '
+      '<strong>TBN: %d of %d ranked priority-queue items (TBN-16487) are teamless</strong>, plus %d teamless To Do items across both projects.</p>'
       '<div class="actions">'
-      '<a class="act primary" href="%s" target="_blank" rel="noopener">ASC no-team RfD ↗ (32)</a>'
-      '<a class="act" href="%s" target="_blank" rel="noopener">TBN-16487 teamless ↗ (45)</a>'
-      '<a class="act" href="%s" target="_blank" rel="noopener">Teamless To Do, both ↗ (52)</a>'
+      '<a class="act primary" href="%s" target="_blank" rel="noopener">ASC no-team RfD ↗ (%d)</a>'
+      '<a class="act" href="%s" target="_blank" rel="noopener">TBN-16487 teamless ↗ (%d)</a>'
+      '<a class="act" href="%s" target="_blank" rel="noopener">Teamless To Do, both ↗ (%d)</a>'
       '</div></div></section>' % (
-        jurl(ASC_NOTEAM_RFD), jurl(TBN_16487_NOTEAM),
-        jurl('project in (TBN, "ASC") AND status = "To Do" AND team is EMPTY AND issuetype not in subtaskIssueTypes() ORDER BY project, created ASC')) +
-      '<footer>Source: Jira (trekbikes.atlassian.net), pulled {{ASOF}}. Member counts confirmed by Thomas {{ASOF}} '
+        asc_nt_rfd, q_teamless, q_size, nt_todo_both,
+        jurl(ASC_NOTEAM_RFD), asc_nt_rfd, jurl(TBN_16487_NOTEAM), q_teamless,
+        jurl('project in (TBN, "ASC") AND status = "To Do" AND team is EMPTY AND issuetype not in subtaskIssueTypes() ORDER BY project, created ASC'), nt_todo_both) +
+      '<footer>Source: Jira (trekbikes.atlassian.net), pulled {{ASOF}}. Member counts confirmed by Thomas 2026-07-08 '
       '(B 4, C 3, D 5, E 7, I 4, Mt Doom 5, Neverest 5, RockyBluff 6; TBN Pods F/K excluded — no queue activity). '
-      'Method + item lists: SDM-Queue-Management/progress/funnel-analysis-{{ASOF}}.md.</footer>')
+      'Method + item lists: SDM-Queue-Management/progress/funnel-analysis-2026-07-08.md.</footer>')
     return page("Pod Funnel Dashboards · {{ASOF}}", body)
 
 if __name__ == "__main__":
