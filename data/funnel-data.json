@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-07-09",
+  "asOf": "2026-07-10",
   "burnPerDevPerWeek": 2,
   "reviewMinutesPerItem": 17.5,
   "jiraBase": "https://trekbikes.atlassian.net/issues/?jql=",
@@ -17,19 +17,19 @@
           "name": "Pod B",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-11",
           "devs": 4,
-          "todo": 10,
-          "genuine": 9,
+          "todo": 9,
+          "genuine": 8,
           "ana": 4,
           "sdm": 0,
-          "rfd": 20,
+          "rfd": 19,
           "tgt": 12,
           "back": [
             9,
             0,
             7
           ],
-          "anaOld": 1,
-          "rfdOld": 64,
+          "anaOld": 2,
+          "rfdOld": 65,
           "auto": [
             "TBN-13562",
             "TBN-16234",
@@ -50,7 +50,7 @@
           "todo": 15,
           "genuine": 15,
           "ana": 7,
-          "sdm": 0,
+          "sdm": 1,
           "rfd": 11,
           "tgt": 9,
           "back": [
@@ -58,8 +58,8 @@
             5,
             4
           ],
-          "anaOld": 20,
-          "rfdOld": 73,
+          "anaOld": 21,
+          "rfdOld": 74,
           "auto": [
             "TBN-13631",
             "TBN-14145",
@@ -77,7 +77,7 @@
           "name": "Pod D",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-13",
           "devs": 5,
-          "todo": 18,
+          "todo": 19,
           "genuine": 17,
           "ana": 1,
           "sdm": 0,
@@ -88,8 +88,8 @@
             10,
             2
           ],
-          "anaOld": 20,
-          "rfdOld": 50,
+          "anaOld": 21,
+          "rfdOld": 51,
           "auto": [
             "TBN-10493",
             "TBN-14190",
@@ -108,7 +108,8 @@
             "TBN-20226"
           ],
           "flag": [
-            "TBN-10491"
+            "TBN-10491",
+            "TBN-20248"
           ]
         },
         {
@@ -117,17 +118,17 @@
           "devs": 7,
           "todo": 27,
           "genuine": 21,
-          "ana": 3,
-          "sdm": 3,
-          "rfd": 19,
+          "ana": 8,
+          "sdm": 0,
+          "rfd": 22,
           "tgt": 21,
           "back": [
             10,
             7,
             4
           ],
-          "anaOld": 1,
-          "rfdOld": 87,
+          "anaOld": 2,
+          "rfdOld": 88,
           "auto": [
             "TBN-10077",
             "TBN-11849",
@@ -143,11 +144,11 @@
             "TBN-15442",
             "TBN-15443",
             "TBN-16511",
+            "TBN-19232",
             "TBN-20128",
             "TBN-20229",
-            "TBN-20231",
-            "TBN-20232",
-            "TBN-20233",
+            "TBN-20243",
+            "TBN-20250",
             "TBN-2154"
           ],
           "flag": [
@@ -174,8 +175,8 @@
             0,
             1
           ],
-          "anaOld": 3,
-          "rfdOld": 71,
+          "anaOld": 4,
+          "rfdOld": 72,
           "auto": [
             "TBN-12281",
             "TBN-12782",
@@ -203,7 +204,7 @@
       "label": "Ascend (ASC)",
       "file": "asc.html",
       "noteam": {
-        "todo": 14,
+        "todo": 13,
         "ana": 9,
         "rfd": 38
       },
@@ -214,17 +215,17 @@
           "devs": 5,
           "todo": 13,
           "genuine": 12,
-          "ana": 3,
+          "ana": 4,
           "sdm": 0,
-          "rfd": 6,
+          "rfd": 5,
           "tgt": 15,
           "back": [
             198,
-            61,
+            62,
             14
           ],
-          "anaOld": 20,
-          "rfdOld": 38,
+          "anaOld": 21,
+          "rfdOld": 39,
           "auto": [
             "ASC-1026",
             "ASC-2265",
@@ -247,9 +248,9 @@
           "name": "Neverest",
           "tid": "35ba84fb-8ac0-4cc3-b2bb-7ee20eba77f0",
           "devs": 5,
-          "todo": 11,
-          "genuine": 11,
-          "ana": 12,
+          "todo": 10,
+          "genuine": 10,
+          "ana": 11,
           "sdm": 0,
           "rfd": 7,
           "tgt": 15,
@@ -258,17 +259,16 @@
             10,
             14
           ],
-          "anaOld": 27,
-          "rfdOld": 57,
+          "anaOld": 28,
+          "rfdOld": 58,
           "auto": [
             "ASC-4994",
             "ASC-5717",
-            "ASC-5773",
             "ASC-5983",
             "ASC-7801",
             "ASC-899",
             "ASC-9515",
-            "ASC-9540"
+            "ASC-9593"
           ],
           "flag": []
         },
@@ -280,15 +280,15 @@
           "genuine": 2,
           "ana": 12,
           "sdm": 0,
-          "rfd": 3,
+          "rfd": 6,
           "tgt": 18,
           "back": [
             5,
             79,
             51
           ],
-          "anaOld": 20,
-          "rfdOld": 9,
+          "anaOld": 21,
+          "rfdOld": 10,
           "auto": [
             "ASC-1546",
             "ASC-5642"
