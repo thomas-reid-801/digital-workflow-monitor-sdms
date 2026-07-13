@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-07-10",
+  "asOf": "2026-07-13",
   "burnPerDevPerWeek": 2,
   "reviewMinutesPerItem": 17.5,
   "jiraBase": "https://trekbikes.atlassian.net/issues/?jql=",
@@ -8,7 +8,7 @@
       "label": "TBN \u2014 Trekbikes.com",
       "file": "tbn.html",
       "noteam": {
-        "todo": 39,
+        "todo": 58,
         "ana": 2,
         "rfd": 0
       },
@@ -17,19 +17,19 @@
           "name": "Pod B",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-11",
           "devs": 4,
-          "todo": 9,
-          "genuine": 8,
+          "todo": 8,
+          "genuine": 7,
           "ana": 4,
           "sdm": 0,
-          "rfd": 19,
+          "rfd": 21,
           "tgt": 12,
           "back": [
-            9,
+            7,
             0,
-            7
+            6
           ],
-          "anaOld": 2,
-          "rfdOld": 65,
+          "anaOld": 5,
+          "rfdOld": 68,
           "auto": [
             "TBN-13562",
             "TBN-16234",
@@ -49,17 +49,17 @@
           "devs": 3,
           "todo": 15,
           "genuine": 15,
-          "ana": 7,
+          "ana": 4,
           "sdm": 1,
-          "rfd": 11,
+          "rfd": 12,
           "tgt": 9,
           "back": [
-            13,
+            14,
             5,
             4
           ],
-          "anaOld": 21,
-          "rfdOld": 74,
+          "anaOld": 24,
+          "rfdOld": 77,
           "auto": [
             "TBN-13631",
             "TBN-14145",
@@ -77,19 +77,19 @@
           "name": "Pod D",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-13",
           "devs": 5,
-          "todo": 19,
-          "genuine": 17,
-          "ana": 1,
+          "todo": 16,
+          "genuine": 15,
+          "ana": 2,
           "sdm": 0,
-          "rfd": 5,
+          "rfd": 4,
           "tgt": 15,
           "back": [
             9,
             10,
             2
           ],
-          "anaOld": 21,
-          "rfdOld": 51,
+          "anaOld": 24,
+          "rfdOld": 54,
           "auto": [
             "TBN-10493",
             "TBN-14190",
@@ -103,32 +103,29 @@
             "TBN-19063",
             "TBN-19241",
             "TBN-19404",
-            "TBN-20160",
-            "TBN-20200",
-            "TBN-20226"
+            "TBN-20160"
           ],
           "flag": [
-            "TBN-10491",
-            "TBN-20248"
+            "TBN-10491"
           ]
         },
         {
           "name": "Pod E",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-41",
           "devs": 7,
-          "todo": 27,
-          "genuine": 21,
+          "todo": 26,
+          "genuine": 20,
           "ana": 8,
           "sdm": 0,
-          "rfd": 22,
+          "rfd": 21,
           "tgt": 21,
           "back": [
-            10,
-            7,
+            5,
+            6,
             4
           ],
-          "anaOld": 2,
-          "rfdOld": 88,
+          "anaOld": 5,
+          "rfdOld": 91,
           "auto": [
             "TBN-10077",
             "TBN-11849",
@@ -147,8 +144,7 @@
             "TBN-19232",
             "TBN-20128",
             "TBN-20229",
-            "TBN-20243",
-            "TBN-20250",
+            "TBN-20254",
             "TBN-2154"
           ],
           "flag": [
@@ -164,19 +160,19 @@
           "name": "Pod I",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-43",
           "devs": 4,
-          "todo": 18,
+          "todo": 19,
           "genuine": 18,
           "ana": 3,
           "sdm": 0,
-          "rfd": 7,
+          "rfd": 10,
           "tgt": 12,
           "back": [
             27,
             0,
             1
           ],
-          "anaOld": 4,
-          "rfdOld": 72,
+          "anaOld": 7,
+          "rfdOld": 75,
           "auto": [
             "TBN-12281",
             "TBN-12782",
@@ -196,7 +192,9 @@
             "TBN-9336",
             "TBN-9417"
           ],
-          "flag": []
+          "flag": [
+            "TBN-20276"
+          ]
         }
       ]
     },
@@ -205,8 +203,8 @@
       "file": "asc.html",
       "noteam": {
         "todo": 13,
-        "ana": 9,
-        "rfd": 38
+        "ana": 11,
+        "rfd": 35
       },
       "pods": [
         {
@@ -215,17 +213,17 @@
           "devs": 5,
           "todo": 13,
           "genuine": 12,
-          "ana": 4,
+          "ana": 5,
           "sdm": 0,
-          "rfd": 5,
+          "rfd": 6,
           "tgt": 15,
           "back": [
-            198,
-            62,
+            192,
+            67,
             14
           ],
-          "anaOld": 21,
-          "rfdOld": 39,
+          "anaOld": 24,
+          "rfdOld": 42,
           "auto": [
             "ASC-1026",
             "ASC-2265",
@@ -248,19 +246,19 @@
           "name": "Neverest",
           "tid": "35ba84fb-8ac0-4cc3-b2bb-7ee20eba77f0",
           "devs": 5,
-          "todo": 10,
-          "genuine": 10,
-          "ana": 11,
+          "todo": 11,
+          "genuine": 11,
+          "ana": 12,
           "sdm": 0,
-          "rfd": 7,
+          "rfd": 5,
           "tgt": 15,
           "back": [
-            69,
+            70,
             10,
             14
           ],
-          "anaOld": 28,
-          "rfdOld": 58,
+          "anaOld": 24,
+          "rfdOld": 61,
           "auto": [
             "ASC-4994",
             "ASC-5717",
@@ -268,7 +266,8 @@
             "ASC-7801",
             "ASC-899",
             "ASC-9515",
-            "ASC-9593"
+            "ASC-9651",
+            "ASC-9661"
           ],
           "flag": []
         },
@@ -276,22 +275,23 @@
           "name": "RockyBluff",
           "tid": "b922af32-67e8-4e75-b4a5-89e773eaf50e",
           "devs": 6,
-          "todo": 2,
-          "genuine": 2,
+          "todo": 3,
+          "genuine": 3,
           "ana": 12,
           "sdm": 0,
           "rfd": 6,
           "tgt": 18,
           "back": [
-            5,
+            4,
             79,
             51
           ],
-          "anaOld": 21,
-          "rfdOld": 10,
+          "anaOld": 24,
+          "rfdOld": 4,
           "auto": [
             "ASC-1546",
-            "ASC-5642"
+            "ASC-5642",
+            "ASC-9644"
           ],
           "flag": []
         }
@@ -330,16 +330,13 @@
       "ASC-8764",
       "ASC-8765",
       "ASC-8766",
-      "ASC-9296",
       "ASC-9297",
-      "ASC-9307",
       "ASC-9384",
       "ASC-9389",
-      "ASC-9430",
       "ASC-9431",
-      "ASC-9520"
+      "ASC-9613"
     ],
-    "tbn16487TeamlessCount": 39,
-    "tbn16487QueueSize": 51
+    "tbn16487TeamlessCount": 51,
+    "tbn16487QueueSize": 63
   }
 }
