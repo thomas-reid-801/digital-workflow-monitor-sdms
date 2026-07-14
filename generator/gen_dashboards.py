@@ -19,25 +19,42 @@ JIRA = DATA["jiraBase"]
 def jurl(jql): return JIRA + urllib.parse.quote(jql)
 
 PODS = {k: v["pods"] for k, v in DATA["projects"].items()}
-PROJ_META = {k: dict(label=v["label"], file=v["file"], noteam=v["noteam"]) for k, v in DATA["projects"].items()}
-ASC_NOTEAM_RFD = "key in (%s)" % ", ".join(DATA["hygiene"]["ascNoteamRfdKeys"])
+PROJ_META = {k: dict(label=v["label"], file=v["file"], noteam=v["noteam"], hygiene=v.get("hygiene", {}),
+                     memoHeader=v.get("memoHeader", v["label"]))
+             for k, v in DATA["projects"].items()}
+# Active = every pod has a confirmed dev count. Pending projects are staged in the
+# data file but not published (no card, no sub-page) until counts land.
+ACTIVE = [p for p, v in DATA["projects"].items()
+          if not any(pod.get("devs") is None for pod in v["pods"])]
 
-TBN_16487_NOTEAM = 'parent = TBN-16487 AND team is EMPTY AND statusCategory != Done ORDER BY Rank ASC'
+def pkey(proj): return '"%s"' % proj  # always quote; safe for reserved-word keys (ASC, ...)
 
-def pkey(proj): return '"ASC"' if proj == "ASC" else proj
+def tids_of(pod): return pod.get("tids") or [pod["tid"]]
 
-def st_jql(proj, tid, status):
-    return 'project = %s AND team = "%s" AND status = "%s" AND issuetype not in subtaskIssueTypes()' % (pkey(proj), tid, status)
+def team_clause(pod):  # single tid -> team = "x"; merged pod -> team in ("x","y")
+    ts = tids_of(pod)
+    return ('team = "%s"' % ts[0]) if len(ts) == 1 else ('team in (%s)' % ", ".join('"%s"' % t for t in ts))
+
+def st_jql(proj, pod, status):
+    return 'project = %s AND %s AND status = "%s" AND issuetype not in subtaskIssueTypes()' % (pkey(proj), team_clause(pod), status)
 
 def noteam_jql(proj, status):
     return 'project = %s AND status = "%s" AND team is EMPTY AND issuetype not in subtaskIssueTypes()' % (pkey(proj), status)
 
-def back_jql(proj, tid, bucket=None):
-    base = st_jql(proj, tid, "Backlog")
+def back_jql(proj, pod, bucket=None):
+    base = st_jql(proj, pod, "Backlog")
     if bucket == 0: base += " AND created >= -26w"
     elif bucket == 1: base += " AND created < -26w AND created >= -52w"
     elif bucket == 2: base += " AND created < -52w"
     return base + " ORDER BY created ASC"
+
+def hyg_pq_jql(proj):    # priority-queue hygiene: teamless items in the ranked queue
+    return ('parent = %s AND team is EMPTY AND statusCategory != Done ORDER BY Rank ASC'
+            % PROJ_META[proj]["hygiene"]["parent"])
+
+def hyg_rfd_jql(proj):   # noteam-rfd hygiene: the explicit no-team RfD key list
+    keys = PROJ_META[proj]["hygiene"].get("rfdKeys", [])
+    return "key in (%s)" % ", ".join(keys) if keys else noteam_jql(proj, "Ready for Development")
 
 def plan(p):
     gap = max(0, p["tgt"] - p["rfd"])
@@ -221,7 +238,7 @@ def bullet_rows(proj, pods):
           '<div class="bname">%s<span class="dv">%d devs ✓</span></div>'
           '<div class="track">%s</div>'
           '<div class="bval"><b>%d</b> / %d%s</div></a>'
-          % (jurl(st_jql(proj, p["tid"], "Ready for Development")), p["name"], p["name"], p["devs"], segs, p["rfd"], p["tgt"], chip))
+          % (jurl(st_jql(proj, p,"Ready for Development")), p["name"], p["name"], p["devs"], segs, p["rfd"], p["tgt"], chip))
     return "\n".join(rows)
 
 def pod_cards(proj, pods):
@@ -249,7 +266,7 @@ def pod_cards(proj, pods):
                       % (jurl(flagj), len(p["flag"]))) if p["flag"] else '<span class="act none">No flagged items</span>'
         qtext = "-- auto-story queue --\n" + autoj
         if flagj: qtext += "\n\n-- To Do needs review --\n" + flagj
-        qtext += "\n\n-- backlog (ranked oldest first) --\n" + back_jql(proj, p["tid"])
+        qtext += "\n\n-- backlog (ranked oldest first) --\n" + back_jql(proj, p)
         out.append(
           '<div class="card%s">' % (" alert" if gap else "") +
           '<h3>%s %s</h3>' % (p["name"], chip) +
@@ -258,7 +275,7 @@ def pod_cards(proj, pods):
           '<div class="actions">' +
           '<a class="act primary" href="%s" target="_blank" rel="noopener">Auto-story queue ↗ (%d)</a>' % (jurl(autoj), len(p["auto"])) +
           review_btn +
-          '<a class="act" href="%s" target="_blank" rel="noopener">Backlog ↗ (%d)</a>' % (jurl(back_jql(proj, p["tid"])), sum(p["back"])) +
+          '<a class="act" href="%s" target="_blank" rel="noopener">Backlog ↗ (%d)</a>' % (jurl(back_jql(proj, p)), sum(p["back"])) +
           '</div>' +
           '<p class="hint">Auto-story queue = genuine To Do items ready for enrichment. Tell Claude: “Tag these with claude-ready-sdm, assign to me, then run auto story.”</p>' +
           '<details><summary>Show queries</summary><div class="jql">%s</div></details>' % qtext +
@@ -269,7 +286,7 @@ def funnel_table(proj, pods, noteam):
     rows = []
     for p in pods:
         pl = plan(p)
-        cell = lambda st, n: '<a href="%s" target="_blank" rel="noopener">%d</a>' % (jurl(st_jql(proj, p["tid"], st)), n)
+        cell = lambda st, n: '<a href="%s" target="_blank" rel="noopener">%d</a>' % (jurl(st_jql(proj, p,st)), n)
         gap = pl["gap"]
         gapcell = '<td class="hot">−%d</td>' % gap if gap else '<td class="good">+%d</td>' % (p["rfd"] - p["tgt"])
         rows.append('<tr><td>%s</td><td>%d</td><td>%s</td><td>%d</td><td>%d</td><td>%s</td><td>%s</td><td>%s</td><td>%d</td>%s</tr>' % (
@@ -307,10 +324,10 @@ def age_bars(proj, pods):
         for i, v in enumerate(p["back"]):
             if v > 0:
                 segs.append('<a class="a%d" style="width:%.2f%%" href="%s" target="_blank" rel="noopener" title="%s — %s: %d items — open in Jira"></a>'
-                            % (i + 1, v / mx * 100, jurl(back_jql(proj, p["tid"], i)), p["name"], lbl[i].replace("&lt;", "<").replace("&gt;", ">"), v))
+                            % (i + 1, v / mx * 100, jurl(back_jql(proj, p, i)), p["name"], lbl[i].replace("&lt;", "<").replace("&gt;", ">"), v))
         rows.append('<div class="arow"><div class="aname">%s</div><div class="abar">%s</div>'
                     '<div class="atot"><a href="%s" target="_blank" rel="noopener"><b>%d</b> items ↗</a></div></div>'
-                    % (p["name"], "".join(segs), jurl(back_jql(proj, p["tid"])), tot))
+                    % (p["name"], "".join(segs), jurl(back_jql(proj, p)), tot))
     return "\n".join(rows)
 
 def product_page(proj):
@@ -386,38 +403,54 @@ def product_page(proj):
 
 def hygiene_block(proj):
     nt = PROJ_META[proj]["noteam"]
-    if proj == "ASC":
+    h = PROJ_META[proj]["hygiene"]
+    kind = h.get("kind")
+    if kind == "noteam-rfd":
         n_rfd = nt["rfd"]
-        tot_rfd = n_rfd + sum(p["rfd"] for p in PODS["ASC"])
+        tot_rfd = n_rfd + sum(p["rfd"] for p in PODS[proj])
+        rfdj = hyg_rfd_jql(proj)
         return ('<div class="callout"><h3>⚠ Data hygiene — the fastest lever</h3>'
-          '<p><strong>%d of ASC’s %d Ready-for-Dev items have no Team</strong> (mostly the Dedicated Testing-Client set). '
+          '<p><strong>%d of %s’s %d Ready-for-Dev items have no Team</strong>%s. '
           'If they’re pod-owned, setting Team closes most of the gap with zero refinement. If deliberately podless, the dashboard should exclude them.</p>'
           '<div class="actions">'
           '<a class="act primary" href="%s" target="_blank" rel="noopener">No-team Ready-for-Dev ↗ (%d)</a>'
           '<a class="act" href="%s" target="_blank" rel="noopener">No-team To Do ↗ (%d)</a>'
           '</div>'
           '<details><summary>Show queries</summary><div class="jql">%s\n\n%s</div></details></div>'
-          % (n_rfd, tot_rfd, jurl(ASC_NOTEAM_RFD), n_rfd, jurl(noteam_jql("ASC", "To Do")), nt["todo"],
-             ASC_NOTEAM_RFD, noteam_jql("ASC", "To Do")))
-    qsize = DATA["hygiene"]["tbn16487QueueSize"]; qteamless = DATA["hygiene"]["tbn16487TeamlessCount"]
-    return ('<div class="callout"><h3>⚠ Data hygiene — the priority queue isn’t feeding the boards</h3>'
-      '<p><strong>%d of the %d items in the ranked priority queue (TBN-16487) have no Team</strong> '
-      '— plus <strong>%d teamless To Do items</strong>. Working these credits no pod. Assign Teams so the curated queue counts.</p>'
+          % (n_rfd, proj, tot_rfd, h.get("note", ""), jurl(rfdj), n_rfd, jurl(noteam_jql(proj, "To Do")), nt["todo"],
+             rfdj, noteam_jql(proj, "To Do")))
+    if kind == "priority-queue":
+        qsize = h["queueSize"]; qteamless = h["teamlessCount"]; parent = h["parent"]
+        pqj = hyg_pq_jql(proj)
+        return ('<div class="callout"><h3>⚠ Data hygiene — the priority queue isn’t feeding the boards</h3>'
+          '<p><strong>%d of the %d items in the ranked priority queue (%s) have no Team</strong> '
+          '— plus <strong>%d teamless To Do items</strong>. Working these credits no pod. Assign Teams so the curated queue counts.</p>'
+          '<div class="actions">'
+          '<a class="act primary" href="%s" target="_blank" rel="noopener">%s teamless ↗ (%d)</a>'
+          '<a class="act" href="%s" target="_blank" rel="noopener">No-team To Do ↗ (%d)</a>'
+          '</div>'
+          '<details><summary>Show queries</summary><div class="jql">%s\n\n%s</div></details></div>'
+          % (qteamless, qsize, parent, nt["todo"], jurl(pqj), parent, qteamless, jurl(noteam_jql(proj, "To Do")), nt["todo"],
+             pqj, noteam_jql(proj, "To Do")))
+    # generic: surface teamless work straight from the noteam counts (no extra pull)
+    if not (nt["rfd"] or nt["todo"]):
+        return ""
+    return ('<div class="callout"><h3>⚠ Data hygiene — teamless work</h3>'
+      '<p><strong>%d Ready-for-Dev and %d To Do items have no Team</strong> and count toward no pod. '
+      'Assign Teams so this work shows up on the boards.</p>'
       '<div class="actions">'
-      '<a class="act primary" href="%s" target="_blank" rel="noopener">TBN-16487 teamless ↗ (%d)</a>'
+      '<a class="act primary" href="%s" target="_blank" rel="noopener">No-team Ready-for-Dev ↗ (%d)</a>'
       '<a class="act" href="%s" target="_blank" rel="noopener">No-team To Do ↗ (%d)</a>'
       '</div>'
       '<details><summary>Show queries</summary><div class="jql">%s\n\n%s</div></details></div>'
-      % (qteamless, qsize, nt["todo"], jurl(TBN_16487_NOTEAM), qteamless, jurl(noteam_jql("TBN", "To Do")), nt["todo"],
-         TBN_16487_NOTEAM, noteam_jql("TBN", "To Do")))
+      % (nt["rfd"], nt["todo"], jurl(noteam_jql(proj, "Ready for Development")), nt["rfd"],
+         jurl(noteam_jql(proj, "To Do")), nt["todo"],
+         noteam_jql(proj, "Ready for Development"), noteam_jql(proj, "To Do")))
 
 def memo_text(proj):
     pods = PODS[proj]
     lines = []
-    if proj == "TBN":
-        lines.append("TBN funnel status — {{ASOF}}")
-    else:
-        lines.append("Ascend (ASC) funnel status — {{ASOF}}")
+    lines.append("%s funnel status — {{ASOF}}" % PROJ_META[proj]["memoHeader"])
     lines.append("Target: 3 items per developer in Ready for Development, per pod. Working rate: 2 items per developer per week.")
     lines.append("")
     lines.append("Per pod — where they stand and what they need:")
@@ -441,14 +474,20 @@ def memo_text(proj):
     tot_i = sum(plan(p)["wk_items"] for p in pods)
     tot_topup = sum(plan(p)["topup"] for p in pods)
     lines.append("• Product total ask: %d items/week moved Backlog → To Do, every week; one-time top-up +%d to give every pod a 2-week buffer." % (tot_i, tot_topup))
-    if proj == "ASC":
-        lines.append("• Fastest fix first: %d Ready-for-Dev items carry no Team (mostly the Dedicated Testing-Client set). Assigning Teams may close most of the gap with zero new refinement." % PROJ_META["ASC"]["noteam"]["rfd"])
+    h = PROJ_META[proj]["hygiene"]; kind = h.get("kind")
+    nt_rfd, nt_todo = PROJ_META[proj]["noteam"]["rfd"], PROJ_META[proj]["noteam"]["todo"]
+    if kind == "noteam-rfd":
+        lines.append("• Fastest fix first: %d Ready-for-Dev items carry no Team%s. Assigning Teams may close most of the gap with zero new refinement." % (
+            nt_rfd, h.get("note", "")))
+    elif kind == "priority-queue":
+        lines.append("• Hygiene: %d of %d items in the ranked priority queue (%s) have no Team, plus %d teamless To Do items. Assign pods so the queue feeds the boards." % (
+            h["teamlessCount"], h["queueSize"], h["parent"], nt_todo))
+    elif nt_rfd or nt_todo:
+        lines.append("• Hygiene: %d Ready-for-Dev and %d To Do items have no Team — assign Teams so they count toward the boards." % (nt_rfd, nt_todo))
+    if kind != "priority-queue":
         worst = min(pods, key=lambda p: plan(p)["runway"])
         lines.append("• Urgency: %s’s To Do queue is ~%d DAY%s from empty. When To Do empties, the funnel stalls and Ready-for-Dev cannot recover." % (
             worst["name"], plan(worst)["runway"], "" if plan(worst)["runway"] == 1 else "S"))
-    else:
-        lines.append("• Hygiene: %d of %d items in the ranked priority queue (TBN-16487) have no Team, plus %d teamless To Do items. Assign pods so the queue feeds the boards." % (
-            DATA["hygiene"]["tbn16487TeamlessCount"], DATA["hygiene"]["tbn16487QueueSize"], PROJ_META["TBN"]["noteam"]["todo"]))
     lines.append("• Pod capacity: keeping pace costs each pod %.1f–%.1f h/week of refinement (17.5 min/item)." % (
         min(plan(p)["wk_hours"] for p in pods), max(plan(p)["wk_hours"] for p in pods)))
     lines.append("")
@@ -456,7 +495,7 @@ def memo_text(proj):
     return "\n".join(lines)
 
 def parent_page(prod_urls):
-    all_pods = [(proj, p) for proj in ("TBN", "ASC") for p in PODS[proj]]
+    all_pods = [(proj, p) for proj in ACTIVE for p in PODS[proj]]
     plans = [(proj, p, plan(p)) for proj, p in all_pods]
     tot_gap = sum(pl["gap"] for _, _, pl in plans)
     catchup = round(sum(pl["hours"] for _, _, pl in plans), 1)
@@ -481,12 +520,41 @@ def parent_page(prod_urls):
             prod_urls[proj], PROJ_META[proj]["label"], len(pods), sum(p["devs"] for p in pods), gapped,
             "bad" if g else "", ("−%d" % g) if g else "0", ch, wi, "bad" if mr <= 7 else "", mr)
 
-    tbn_wk = sum(BURN * p["devs"] for p in PODS["TBN"])
-    asc_wk = sum(BURN * p["devs"] for p in PODS["ASC"])
-    asc_nt_rfd = PROJ_META["ASC"]["noteam"]["rfd"]
-    q_teamless = DATA["hygiene"]["tbn16487TeamlessCount"]
-    q_size = DATA["hygiene"]["tbn16487QueueSize"]
-    nt_todo_both = PROJ_META["TBN"]["noteam"]["todo"] + PROJ_META["ASC"]["noteam"]["todo"]
+    wk_breakdown = ", ".join("%s %d" % (proj, sum(BURN * p["devs"] for p in PODS[proj])) for proj in ACTIVE)
+    cards = "".join(prod_card(proj) for proj in ACTIVE)
+
+    # Cross-product hygiene: one line per project with a configured lever, plus a
+    # combined teamless-To-Do link across all active projects.
+    hyg_bits, hyg_acts = [], []
+    for proj in ACTIVE:
+        h = PROJ_META[proj]["hygiene"]; kind = h.get("kind")
+        if kind == "noteam-rfd":
+            n = PROJ_META[proj]["noteam"]["rfd"]
+            hyg_bits.append("<strong>%s: %d Ready-for-Dev items with no Team</strong>%s" % (proj, n, h.get("note", "")))
+            hyg_acts.append('<a class="act primary" href="%s" target="_blank" rel="noopener">%s no-team RfD ↗ (%d)</a>'
+                            % (jurl(hyg_rfd_jql(proj)), proj, n))
+        elif kind == "priority-queue":
+            hyg_bits.append("<strong>%s: %d of %d ranked priority-queue items (%s) are teamless</strong>"
+                            % (proj, h["teamlessCount"], h["queueSize"], h["parent"]))
+            hyg_acts.append('<a class="act" href="%s" target="_blank" rel="noopener">%s teamless ↗ (%d)</a>'
+                            % (jurl(hyg_pq_jql(proj)), h["parent"], h["teamlessCount"]))
+    nt_todo_all = sum(PROJ_META[p]["noteam"]["todo"] for p in ACTIVE)
+    td_jql = ('project in (%s) AND status = "To Do" AND team is EMPTY AND issuetype not in subtaskIssueTypes() '
+              'ORDER BY project, created ASC' % ", ".join(pkey(p) for p in ACTIVE))
+    hyg_acts.append('<a class="act" href="%s" target="_blank" rel="noopener">Teamless To Do, all ↗ (%d)</a>'
+                    % (jurl(td_jql), nt_todo_all))
+    hygiene_section = ""
+    if hyg_bits or nt_todo_all:
+        intro = " ".join(hyg_bits)
+        if nt_todo_all:
+            intro += (" Plus " if hyg_bits else "") + "%d teamless To Do items across all products." % nt_todo_all
+        hygiene_section = ('<section><h2>Cross-product data hygiene</h2>'
+          '<p class="h2note">Work that counts toward no pod because the Team field is empty — the fastest levers.</p>'
+          '<div class="callout"><h3>⚠ Assign Teams on these first</h3>'
+          '<p>%s</p><div class="actions">%s</div></div></section>' % (intro, "".join(hyg_acts)))
+
+    counts = "; ".join("%s %s" % (proj, ", ".join("%s %d" % (pod["name"], pod["devs"]) for pod in PODS[proj]))
+                       for proj in ACTIVE)
 
     body = (
       '<header>'
@@ -496,37 +564,27 @@ def parent_page(prod_urls):
       'working at <strong>2 items per developer per week</strong>. Open a product dashboard for per-pod detail, '
       'clickable Jira queries, and the product manager note.</p>'
       '<div class="tiles">'
-      '<div class="tile"><div class="v bad">−%d</div><div class="k">items behind target across all gapped pods (both products)</div></div>'
+      '<div class="tile"><div class="v bad">−%d</div><div class="k">items behind target across all gapped pods</div></div>'
       '<div class="tile"><div class="v">%.1f h <small>+ %.1f h/wk</small></div><div class="k">refinement: one-time catch-up + weekly to hold pace</div></div>'
-      '<div class="tile"><div class="v">%d / wk</div><div class="k">items PMs must move Backlog → To Do weekly (TBN %d, ASC %d)</div></div>'
+      '<div class="tile"><div class="v">%d / wk</div><div class="k">items PMs must move Backlog → To Do weekly (%s)</div></div>'
       '<div class="tile"><div class="v bad">≈%d day</div><div class="k">until the first pod (%s) has an empty To Do queue</div></div>'
-      '</div></header>' % (tot_gap, catchup, weekly_h, weekly_i, tbn_wk, asc_wk, min_run, min_pod) +
-      '<section><h2>Products</h2><div class="plist">%s%s</div></section>' % (prod_card("TBN"), prod_card("ASC")) +
-      '<section><h2>Cross-product data hygiene</h2>'
-      '<p class="h2note">Work that counts toward no pod because the Team field is empty — the fastest levers in both products.</p>'
-      '<div class="callout"><h3>⚠ Assign Teams on these first</h3>'
-      '<p><strong>ASC: %d Ready-for-Dev items with no Team</strong> (mostly the Dedicated Testing-Client set) — may close most of the ASC gap instantly. '
-      '<strong>TBN: %d of %d ranked priority-queue items (TBN-16487) are teamless</strong>, plus %d teamless To Do items across both projects.</p>'
-      '<div class="actions">'
-      '<a class="act primary" href="%s" target="_blank" rel="noopener">ASC no-team RfD ↗ (%d)</a>'
-      '<a class="act" href="%s" target="_blank" rel="noopener">TBN-16487 teamless ↗ (%d)</a>'
-      '<a class="act" href="%s" target="_blank" rel="noopener">Teamless To Do, both ↗ (%d)</a>'
-      '</div></div></section>' % (
-        asc_nt_rfd, q_teamless, q_size, nt_todo_both,
-        jurl(ASC_NOTEAM_RFD), asc_nt_rfd, jurl(TBN_16487_NOTEAM), q_teamless,
-        jurl('project in (TBN, "ASC") AND status = "To Do" AND team is EMPTY AND issuetype not in subtaskIssueTypes() ORDER BY project, created ASC'), nt_todo_both) +
-      '<footer>Source: Jira (trekbikes.atlassian.net), pulled {{ASOF}}. Member counts confirmed by Thomas 2026-07-08 '
-      '(B 4, C 3, D 5, E 7, I 4, Mt Doom 5, Neverest 5, RockyBluff 6; TBN Pods F/K excluded — no queue activity). '
-      'Method + item lists: SDM-Queue-Management/progress/funnel-analysis-2026-07-08.md.</footer>')
+      '</div></header>' % (tot_gap, catchup, weekly_h, weekly_i, wk_breakdown, min_run, min_pod) +
+      '<section><h2>Products</h2><div class="plist">%s</div></section>' % cards +
+      hygiene_section +
+      '<footer>Source: Jira (trekbikes.atlassian.net), pulled {{ASOF}}. Member counts confirmed by Thomas '
+      '(%s). Method + item lists: SDM-Queue-Management/progress/funnel-analysis-2026-07-08.md.</footer>' % counts)
     return page("Pod Funnel Dashboards · {{ASOF}}", body)
 
 if __name__ == "__main__":
     out = os.path.join(ROOT, "docs")
     os.makedirs(out, exist_ok=True)
-    for proj in ("TBN", "ASC"):
+    for proj in ACTIVE:
         fn = os.path.join(out, PROJ_META[proj]["file"])
         open(fn, "w", encoding="utf-8").write(product_page(proj))
         print("wrote", fn)
     fn = os.path.join(out, "index.html")
     open(fn, "w", encoding="utf-8").write(parent_page({k: v["file"] for k, v in PROJ_META.items()}))
     print("wrote", fn)
+    pending = [p for p in DATA["projects"] if p not in ACTIVE]
+    if pending:
+        print("skipped (dev counts pending):", ", ".join(pending))

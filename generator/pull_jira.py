@@ -46,7 +46,6 @@ TARGET_STATUSES = ("To Do", "Analysis", "SDM Review", "Ready for Development")
 PIPELINE_FIELDS = ["summary", "status", "issuetype", "assignee",
                    "created", "updated", "parent", "customfield_12300"]
 TEAM_FIELD = "customfield_12300"
-PRIORITY_PARENT = "TBN-16487"          # TBN Missy-curated priority queue umbrella
 MAX_PAGES = 60                          # safety backstop (60 * 100 = 6000 issues)
 
 # ---------------------------------------------------------------------------
@@ -94,12 +93,14 @@ def pipeline_item(issue):
     """Map a raw Jira issue to the pipeline schema build_data.py reads."""
     f = issue["fields"]
     parent = f.get("parent") or {}
+    tf = f.get(TEAM_FIELD)
     return {
         "key": issue["key"],
         "summary": f.get("summary"),
         "status": f["status"]["name"],
         "issuetype": f["issuetype"]["name"],
-        "team": team_title(f.get(TEAM_FIELD)),
+        "team": team_title(tf),
+        "teamId": tf.get("id") if isinstance(tf, dict) else None,
         "parentKey": parent.get("key"),
         "parentStatus": (parent.get("fields", {}).get("status") or {}).get("name"),
         "updated": f.get("updated"),
@@ -201,11 +202,16 @@ def pull_pipeline(base, auth, proj):
     return {"items": items}
 
 
+def team_clause(pod):  # single tid -> team = "x"; merged pod -> team in ("x","y")
+    ts = pod.get("tids") or [pod["tid"]]
+    return ('team = "%s"' % ts[0]) if len(ts) == 1 else ('team in (%s)' % ", ".join('"%s"' % t for t in ts))
+
+
 def pull_backlog(base, auth, proj, pods, six, twelve):
     by_team = {}
     for pod in pods:
-        jql = ('project = "%s" AND team = "%s" AND status = "Backlog" '
-               'AND issuetype not in subtaskIssueTypes()' % (proj, pod["tid"]))
+        jql = ('project = "%s" AND %s AND status = "Backlog" '
+               'AND issuetype not in subtaskIssueTypes()' % (proj, team_clause(pod)))
         raw = search_all(base, auth, jql, ["created"], "%s %s" % (proj, pod["name"]))
         created = [i["fields"]["created"] for i in raw]
         missing = [i["key"] for i in raw if not i["fields"].get("created")]
@@ -216,17 +222,16 @@ def pull_backlog(base, auth, proj, pods, six, twelve):
     return by_team
 
 
-def pull_priority_queue(base, auth):
-    jql = ('parent = %s AND status in ("To Do","Backlog") ORDER BY Rank ASC'
-           % PRIORITY_PARENT)
-    raw = search_all(base, auth, jql, ["summary", "status", TEAM_FIELD], "TBN priority-queue")
+def pull_priority_queue(base, auth, parent):
+    jql = ('parent = %s AND status in ("To Do","Backlog") ORDER BY Rank ASC' % parent)
+    raw = search_all(base, auth, jql, ["summary", "status", TEAM_FIELD], "%s priority-queue" % parent)
     return [{"key": i["key"], "team": team_title(i["fields"].get(TEAM_FIELD))} for i in raw]
 
 
-def pull_asc_noteam_rfd(base, auth):
-    jql = ('project = "ASC" AND status = "Ready for Development" AND team is EMPTY '
-           'AND issuetype not in subtaskIssueTypes()')
-    raw = search_all(base, auth, jql, ["summary"], "ASC noteam-RfD")
+def pull_noteam_rfd(base, auth, proj):
+    jql = ('project = "%s" AND status = "Ready for Development" AND team is EMPTY '
+           'AND issuetype not in subtaskIssueTypes()' % proj)
+    raw = search_all(base, auth, jql, ["summary"], "%s noteam-RfD" % proj)
     return sorted((i["key"] for i in raw), key=lambda k: int(k.split("-")[1]))
 
 
@@ -240,7 +245,12 @@ def run(pull_dir, asof_s, prefix):
     print("asOf %s  (lt6mo>=%s, m6to12>=%s)" % (asof_s, six, twelve))
     base, auth = load_creds()
     data = json.load(open(DATA_FILE, encoding="utf-8-sig"))
-    pods = {p: data["projects"][p]["pods"] for p in ("TBN", "ASC")}
+    # Pending projects (any pod with no confirmed dev count) are staged but not pulled.
+    active = [p for p, pd in data["projects"].items()
+              if not any(pod.get("devs") is None for pod in pd["pods"])]
+    skipped = [p for p in data["projects"] if p not in active]
+    if skipped:
+        print("skipping (dev counts pending):", ", ".join(skipped))
 
     os.makedirs(pull_dir, exist_ok=True)
 
@@ -249,28 +259,32 @@ def run(pull_dir, asof_s, prefix):
         json.dump(obj, open(path, "w", encoding="utf-8"), indent=2)
         print("wrote", path)
 
-    for proj in ("TBN", "ASC"):
+    for proj in active:
+        pods = data["projects"][proj]["pods"]
         write(proj.lower() + "_pipeline.json", pull_pipeline(base, auth, proj))
+        back = {"backlogByTeam": pull_backlog(base, auth, proj, pods, six, twelve)}
+        h = data["projects"][proj].get("hygiene", {})
+        if h.get("kind") == "priority-queue":
+            back["priorityQueue"] = pull_priority_queue(base, auth, h["parent"])
+        elif h.get("kind") == "noteam-rfd":
+            back["noteamRfdKeys"] = pull_noteam_rfd(base, auth, proj)
+        write(proj.lower() + "_backlog.json", back)
 
-    tbn_back = pull_backlog(base, auth, "TBN", pods["TBN"], six, twelve)
-    write("tbn_backlog.json", {"backlogByTeam": tbn_back,
-                               "priorityQueue": pull_priority_queue(base, auth)})
-
-    asc_back = pull_backlog(base, auth, "ASC", pods["ASC"], six, twelve)
-    write("asc_backlog.json", {"backlogByTeam": asc_back,
-                               "noteamRfdKeys": pull_asc_noteam_rfd(base, auth)})
-
-    # cross-check: every configured pod tid should have surfaced a team title in
-    # the pipeline (endswith match). Warn, don't fail -- a pod can legitimately
-    # have zero pipeline items, but a systemic team-shape problem shows up here.
-    for proj in ("TBN", "ASC"):
+    # cross-check: every configured pod should surface a team title in the pipeline
+    # (endswith match, honoring an optional pod["match"]). Warn, don't fail -- a pod
+    # can legitimately have zero pipeline items, but a systemic team-shape problem
+    # shows up here.
+    for proj in active:
         items = json.load(open(os.path.join(pull_dir, prefix + proj.lower()
                                             + "_pipeline.json"), encoding="utf-8"))["items"]
+        seen_tids = {i.get("teamId") for i in items}
         titles = {i["team"] for i in items if i["team"]}
-        for pod in pods[proj]:
-            if not any(t.endswith(pod["name"]) for t in titles):
-                print("  NOTE: %s %s matched no pipeline team title (0 items, or "
-                      "team-field shape changed)" % (proj, pod["name"]))
+        for pod in data["projects"][proj]["pods"]:
+            m = pod.get("match", pod["name"])
+            pod_tids = set(pod.get("tids") or [pod["tid"]])
+            if not (pod_tids & seen_tids) and not any(t.endswith(m) for t in titles):
+                print("  NOTE: %s %s matched no pipeline items by team-id or title "
+                      "(0 items, or team-field shape changed)" % (proj, pod["name"]))
     print("done. now run: python generator/build_data.py %s %s" % (pull_dir, asof_s))
 
 
@@ -312,6 +326,15 @@ def selftest():
     it = pipeline_item(issue)
     assert it["team"].endswith("Pod E") and it["parentKey"] == "TBN-16487"
     assert it["parentStatus"] == "In Progress"
+    assert it["teamId"] == "t"
+    # a pod whose display name differs from its team-title suffix (build_data uses
+    # pod["match"]); team title still extracts cleanly here
+    assert team_title({"id": "z", "title": "IT-BI-Data"}) == "IT-BI-Data"
+    # teamless item -> both team and teamId are None
+    noteam = pipeline_item({"key": "BI-9", "fields": {
+        "summary": "s", "status": {"name": "To Do"}, "issuetype": {"name": "Story"},
+        "created": "2026-05-01T00:00:00.000-0600", "updated": "2026-05-01T00:00:00.000-0600"}})
+    assert noteam["team"] is None and noteam["teamId"] is None
     # validation catches bad rows
     try:
         validate_pipeline([{"key": "X-1", "status": "Backlog",
@@ -328,6 +351,9 @@ def selftest():
     # bucket_backlog sums
     bb = bucket_backlog(["2026-06-01T0", "2025-09-01T0", "2024-01-01T0"], six, twelve)
     assert bb == {"total": 3, "ageBuckets": {"lt6mo": 1, "m6to12": 1, "gt12mo": 1}}
+    # team clause: single tid vs merged pod
+    assert team_clause({"tid": "a"}) == 'team = "a"'
+    assert team_clause({"tids": ["a", "b"]}) == 'team in ("a", "b")'
     print("selftest OK")
 
 
