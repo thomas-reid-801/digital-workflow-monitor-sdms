@@ -6,22 +6,45 @@
 
 ## Step 1 — Pull queue state from Jira
 
-Cloud: `trekbikes.atlassian.net`. Always exclude subtasks. **Quote "ASC"** (JQL reserved word).
-The Jira MCP returns **no total counts** — paginate (maxResults 100, `pageInfo.endCursor` →
-`nextPageToken`) and tally locally; oversized results land in tool-result files (parse with
-Python, `encoding='utf-8'`). Fan out to subagents (one per query group) to keep context clean.
+**Preferred: run the deterministic pull script.** It replaces the four manual pulls,
+bakes in the full-cursor pagination, the correct `issue.fields.*` paths, per-pod backlog
+bucketing, and sum/status/timestamp asserts — i.e. every failure mode the manual pulls
+kept hitting (early pagination stop, copied pod result, wrong field path). It reads pod
+team ids from `data/funnel-data.json`, so nothing is hardcoded.
 
-Per project (TBN, "ASC"):
+```
+python generator/pull_jira.py <pull_dir> <asof YYYY-MM-DD>
+```
+
+One-time auth (only needed once per machine): create an Atlassian API token at
+`https://id.atlassian.com/manage-profile/security/api-tokens`, then either export
+`JIRA_EMAIL` + `JIRA_API_TOKEN`, or create `generator/jira_creds.json`
+= `{"email": "...", "token": "..."}` (gitignored). Offline sanity check any time:
+`python generator/pull_jira.py --selftest`. The script prints each query's page-by-page
+progress and a `[last]` marker so a short pull is visible in the log; a bad pull raises
+and never reaches build_data.py.
+
+**Fallback: manual subagent pulls** (use only if no API token is available — the MCP runs
+on the connector's OAuth session). Cloud: `trekbikes.atlassian.net`. Always exclude subtasks.
+**Quote "ASC"** (JQL reserved word). The Jira MCP returns **no total counts** — paginate
+(maxResults 100, `pageInfo.endCursor` → `nextPageToken`) until `hasNextPage` is false, even
+when a page returns a round number; tally locally; oversized results land in tool-result files
+(parse with Python, `encoding='utf-8-sig'`, from `issues[].fields.*`). Fan out one subagent per
+query group. Per project (TBN, "ASC"):
 
 1. **Pipeline:** `project = <P> AND status in ("To Do","Analysis","SDM Review","Ready for Development") AND issuetype not in subtaskIssueTypes()`
    with fields `["summary","status","issuetype","assignee","created","updated","parent","components","customfield_12300"]`.
 2. **Backlog per pod team** (team IDs are in `data/funnel-data.json` → `pods[].tid`):
    `project = <P> AND team = "<tid>" AND status = "Backlog" AND issuetype not in subtaskIssueTypes()`,
-   fields `["created"]`, cap 500/team. Bucket by created: <6mo / 6–12mo / >12mo.
+   fields `["created"]`, cap 500/team. Bucket by created: <6mo / 6–12mo / >12mo. Run each pod's
+   query separately — do not reuse another pod's result.
 3. **TBN only:** `parent = TBN-16487 AND status in ("To Do","Backlog") ORDER BY Rank ASC` —
    count teamless items for the hygiene block.
 4. **ASC only:** `project = "ASC" AND status = "Ready for Development" AND team is EMPTY` —
    refresh `hygiene.ascNoteamRfdKeys`.
+
+Either path writes the same four files (`r<MMDD>_{tbn,asc}_{pipeline,backlog}.json`) into
+`<pull_dir>`, which Step 2's build_data.py consumes.
 
 ## Step 2 — Compute per pod
 
@@ -64,7 +87,10 @@ the previous snapshot (git diff of funnel-data.json shows this directly), and an
 ## Cadence
 
 - **On demand:** "refresh the SDM funnel dashboards".
-- **Scheduled:** a Claude Code routine can run this runbook; note that scheduled/headless runs
-  need the Atlassian connector available — if it isn't, the run should stop without committing.
+- **Scheduled:** a Claude Code routine can run this runbook. With `pull_jira.py` + a stored
+  API token the whole pipeline (pull → build → generate → commit) is deterministic and needs
+  no Atlassian connector, so it runs cleanly headless. Only the manual-subagent fallback needs
+  the connector; if that path is taken headless and the connector is unavailable, stop without
+  committing.
 - Data-only edits (e.g. corrected dev counts): edit `data/funnel-data.json`, rerun the
   generator, commit — no Jira pull needed.

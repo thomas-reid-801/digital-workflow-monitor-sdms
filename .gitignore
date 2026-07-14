@@ -28,6 +28,13 @@ yarn-error.log*
 .env*.local
 .env
 
+# Jira API credentials for generator/pull_jira.py (never commit a token)
+generator/jira_creds.json
+
+# Python bytecode
+__pycache__/
+*.pyc
+
 # vercel
 .vercel
 
