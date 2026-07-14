@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-07-13",
+  "asOf": "2026-07-14",
   "burnPerDevPerWeek": 2,
   "reviewMinutesPerItem": 17.5,
   "jiraBase": "https://trekbikes.atlassian.net/issues/?jql=",
@@ -8,7 +8,7 @@
       "label": "TBN \u2014 Trekbikes.com",
       "file": "tbn.html",
       "noteam": {
-        "todo": 58,
+        "todo": 57,
         "ana": 2,
         "rfd": 0
       },
@@ -28,8 +28,8 @@
             0,
             6
           ],
-          "anaOld": 5,
-          "rfdOld": 68,
+          "anaOld": 6,
+          "rfdOld": 69,
           "auto": [
             "TBN-13562",
             "TBN-16234",
@@ -47,22 +47,23 @@
           "name": "Pod C",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-12",
           "devs": 3,
-          "todo": 15,
-          "genuine": 15,
+          "todo": 16,
+          "genuine": 16,
           "ana": 4,
           "sdm": 1,
-          "rfd": 12,
+          "rfd": 11,
           "tgt": 9,
           "back": [
             14,
             5,
             4
           ],
-          "anaOld": 24,
-          "rfdOld": 77,
+          "anaOld": 25,
+          "rfdOld": 78,
           "auto": [
             "TBN-13631",
             "TBN-14145",
+            "TBN-16035",
             "TBN-16124",
             "TBN-16125",
             "TBN-16126",
@@ -77,19 +78,19 @@
           "name": "Pod D",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-13",
           "devs": 5,
-          "todo": 16,
-          "genuine": 15,
-          "ana": 2,
+          "todo": 14,
+          "genuine": 13,
+          "ana": 6,
           "sdm": 0,
           "rfd": 4,
           "tgt": 15,
           "back": [
-            9,
+            7,
             10,
             2
           ],
-          "anaOld": 24,
-          "rfdOld": 54,
+          "anaOld": 25,
+          "rfdOld": 55,
           "auto": [
             "TBN-10493",
             "TBN-14190",
@@ -100,10 +101,8 @@
             "TBN-18657",
             "TBN-18668",
             "TBN-18670",
-            "TBN-19063",
             "TBN-19241",
-            "TBN-19404",
-            "TBN-20160"
+            "TBN-19404"
           ],
           "flag": [
             "TBN-10491"
@@ -115,17 +114,17 @@
           "devs": 7,
           "todo": 26,
           "genuine": 20,
-          "ana": 8,
+          "ana": 6,
           "sdm": 0,
-          "rfd": 21,
+          "rfd": 18,
           "tgt": 21,
           "back": [
             5,
             6,
             4
           ],
-          "anaOld": 5,
-          "rfdOld": 91,
+          "anaOld": 6,
+          "rfdOld": 92,
           "auto": [
             "TBN-10077",
             "TBN-11849",
@@ -160,19 +159,19 @@
           "name": "Pod I",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-43",
           "devs": 4,
-          "todo": 19,
+          "todo": 18,
           "genuine": 18,
-          "ana": 3,
+          "ana": 2,
           "sdm": 0,
           "rfd": 10,
           "tgt": 12,
           "back": [
-            27,
+            22,
             0,
             1
           ],
-          "anaOld": 7,
-          "rfdOld": 75,
+          "anaOld": 6,
+          "rfdOld": 76,
           "auto": [
             "TBN-12281",
             "TBN-12782",
@@ -180,21 +179,19 @@
             "TBN-15365",
             "TBN-16708",
             "TBN-16859",
-            "TBN-17540",
             "TBN-17624",
             "TBN-17633",
             "TBN-17956",
             "TBN-20184",
             "TBN-20225",
             "TBN-20234",
+            "TBN-20276",
             "TBN-9334",
             "TBN-9335",
             "TBN-9336",
             "TBN-9417"
           ],
-          "flag": [
-            "TBN-20276"
-          ]
+          "flag": []
         }
       ]
     },
@@ -204,7 +201,7 @@
       "noteam": {
         "todo": 13,
         "ana": 11,
-        "rfd": 35
+        "rfd": 36
       },
       "pods": [
         {
@@ -213,17 +210,17 @@
           "devs": 5,
           "todo": 13,
           "genuine": 12,
-          "ana": 5,
+          "ana": 4,
           "sdm": 0,
           "rfd": 6,
           "tgt": 15,
           "back": [
-            192,
-            67,
+            145,
+            114,
             14
           ],
-          "anaOld": 24,
-          "rfdOld": 42,
+          "anaOld": 25,
+          "rfdOld": 43,
           "auto": [
             "ASC-1026",
             "ASC-2265",
@@ -246,19 +243,19 @@
           "name": "Neverest",
           "tid": "35ba84fb-8ac0-4cc3-b2bb-7ee20eba77f0",
           "devs": 5,
-          "todo": 11,
-          "genuine": 11,
+          "todo": 10,
+          "genuine": 10,
           "ana": 12,
           "sdm": 0,
-          "rfd": 5,
+          "rfd": 6,
           "tgt": 15,
           "back": [
-            70,
+            71,
             10,
             14
           ],
-          "anaOld": 24,
-          "rfdOld": 61,
+          "anaOld": 25,
+          "rfdOld": 62,
           "auto": [
             "ASC-4994",
             "ASC-5717",
@@ -266,7 +263,6 @@
             "ASC-7801",
             "ASC-899",
             "ASC-9515",
-            "ASC-9651",
             "ASC-9661"
           ],
           "flag": []
@@ -286,8 +282,8 @@
             79,
             51
           ],
-          "anaOld": 24,
-          "rfdOld": 4,
+          "anaOld": 25,
+          "rfdOld": 5,
           "auto": [
             "ASC-1546",
             "ASC-5642",
@@ -334,9 +330,10 @@
       "ASC-9384",
       "ASC-9389",
       "ASC-9431",
-      "ASC-9613"
+      "ASC-9613",
+      "ASC-9676"
     ],
     "tbn16487TeamlessCount": 51,
-    "tbn16487QueueSize": 63
+    "tbn16487QueueSize": 64
   }
 }
