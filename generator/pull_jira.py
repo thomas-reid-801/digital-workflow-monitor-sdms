@@ -225,7 +225,12 @@ def pull_backlog(base, auth, proj, pods, six, twelve):
 def pull_priority_queue(base, auth, parent):
     jql = ('parent = %s AND status in ("To Do","Backlog") ORDER BY Rank ASC' % parent)
     raw = search_all(base, auth, jql, ["summary", "status", TEAM_FIELD], "%s priority-queue" % parent)
-    return [{"key": i["key"], "team": team_title(i["fields"].get(TEAM_FIELD))} for i in raw]
+    out = []
+    for i in raw:
+        tf = i["fields"].get(TEAM_FIELD)
+        out.append({"key": i["key"], "team": team_title(tf),
+                    "teamId": tf.get("id") if isinstance(tf, dict) else None})
+    return out
 
 
 def pull_noteam_rfd(base, auth, proj):

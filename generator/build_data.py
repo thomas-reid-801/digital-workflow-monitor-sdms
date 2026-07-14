@@ -16,6 +16,15 @@ DATA_FILE = os.path.join(ROOT, "data", "funnel-data.json")
 DONE = {"Done", "Closed", "Resolved", "Cancelled", "Canceled"}
 WORKABLE = {"Story", "Task", "Bug", "Defect"}
 
+def has_team(i):
+    """Whether an item has a Team assigned. teamId is authoritative and matches
+    Jira's `team is EMPTY` semantics; fall back to the title only for older pulls
+    that predate teamId. A "hidden" team (id present but empty title, for teams the
+    API user can't see) still counts as assigned -- NOT as no-team."""
+    if "teamId" in i:
+        return i["teamId"] is not None
+    return bool(i.get("team"))
+
 def load(p):
     return json.load(open(p, encoding="utf-8-sig"))
 
@@ -48,9 +57,9 @@ def main():
         items = pipes[proj]
         pq_keys = {i["key"] for i in backs[proj].get("priorityQueue", [])}
         pdata["noteam"] = {
-            "todo": sum(1 for i in items if i["status"] == "To Do" and not i.get("team")),
-            "ana": sum(1 for i in items if i["status"] == "Analysis" and not i.get("team")),
-            "rfd": sum(1 for i in items if i["status"] == "Ready for Development" and not i.get("team")),
+            "todo": sum(1 for i in items if i["status"] == "To Do" and not has_team(i)),
+            "ana": sum(1 for i in items if i["status"] == "Analysis" and not has_team(i)),
+            "rfd": sum(1 for i in items if i["status"] == "Ready for Development" and not has_team(i)),
         }
         for pod in pdata["pods"]:
             # Prefer exact team-id match (reliable, equals the configured tid(s)); a
@@ -92,7 +101,7 @@ def main():
         if h.get("kind") == "priority-queue":
             pq = backs[proj].get("priorityQueue", [])
             h["queueSize"] = len(pq)
-            h["teamlessCount"] = sum(1 for i in pq if not i.get("team"))
+            h["teamlessCount"] = sum(1 for i in pq if not has_team(i))
         elif h.get("kind") == "noteam-rfd":
             h["rfdKeys"] = sorted(backs[proj].get("noteamRfdKeys", []),
                                   key=lambda k: int(k.split("-")[1]))

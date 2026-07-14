@@ -21,7 +21,7 @@
           "genuine": 7,
           "ana": 4,
           "sdm": 0,
-          "rfd": 21,
+          "rfd": 20,
           "tgt": 12,
           "back": [
             7,
@@ -347,9 +347,9 @@
       "file": "mbi.html",
       "memoHeader": "MBI",
       "noteam": {
-        "todo": 1,
+        "todo": 0,
         "ana": 2,
-        "rfd": 2
+        "rfd": 0
       },
       "hygiene": {
         "kind": "generic"
@@ -359,8 +359,8 @@
           "name": "Pod J",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-58",
           "devs": 5,
-          "todo": 7,
-          "genuine": 7,
+          "todo": 8,
+          "genuine": 8,
           "ana": 6,
           "sdm": 0,
           "rfd": 11,
@@ -368,6 +368,7 @@
           "anaOld": 8,
           "rfdOld": 57,
           "auto": [
+            "MBI-1667",
             "MBI-1836",
             "MBI-1911",
             "MBI-2353",
@@ -389,7 +390,7 @@
       "noteam": {
         "todo": 32,
         "ana": 0,
-        "rfd": 21
+        "rfd": 1
       },
       "hygiene": {
         "kind": "generic"
