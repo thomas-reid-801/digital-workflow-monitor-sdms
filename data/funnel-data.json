@@ -8,7 +8,7 @@
       "label": "TBN \u2014 Trekbikes.com",
       "file": "tbn.html",
       "noteam": {
-        "todo": 57,
+        "todo": 58,
         "ana": 2,
         "rfd": 0
       },
@@ -50,8 +50,8 @@
           "todo": 16,
           "genuine": 16,
           "ana": 4,
-          "sdm": 1,
-          "rfd": 11,
+          "sdm": 0,
+          "rfd": 12,
           "tgt": 9,
           "back": [
             14,
@@ -78,8 +78,8 @@
           "name": "Pod D",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-13",
           "devs": 5,
-          "todo": 14,
-          "genuine": 13,
+          "todo": 15,
+          "genuine": 14,
           "ana": 6,
           "sdm": 0,
           "rfd": 4,
@@ -102,7 +102,8 @@
             "TBN-18668",
             "TBN-18670",
             "TBN-19241",
-            "TBN-19404"
+            "TBN-19404",
+            "TBN-20309"
           ],
           "flag": [
             "TBN-10491"
@@ -121,7 +122,7 @@
           "back": [
             5,
             6,
-            4
+            3
           ],
           "anaOld": 6,
           "rfdOld": 92,
@@ -200,8 +201,8 @@
       "file": "asc.html",
       "noteam": {
         "todo": 13,
-        "ana": 11,
-        "rfd": 36
+        "ana": 12,
+        "rfd": 35
       },
       "pods": [
         {
@@ -275,7 +276,7 @@
           "genuine": 3,
           "ana": 12,
           "sdm": 0,
-          "rfd": 6,
+          "rfd": 7,
           "tgt": 18,
           "back": [
             4,
@@ -330,8 +331,7 @@
       "ASC-9384",
       "ASC-9389",
       "ASC-9431",
-      "ASC-9613",
-      "ASC-9676"
+      "ASC-9613"
     ],
     "tbn16487TeamlessCount": 51,
     "tbn16487QueueSize": 64
