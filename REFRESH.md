@@ -94,3 +94,29 @@ the previous snapshot (git diff of funnel-data.json shows this directly), and an
   committing.
 - Data-only edits (e.g. corrected dev counts): edit `data/funnel-data.json`, rerun the
   generator, commit — no Jira pull needed.
+
+---
+
+# Ascend Topic Queue (`docs/topic-queue.html`)
+
+A separate dashboard: the ranked topic backlog under **ASC-9433** (SDM + PM shared
+prioritization), joined with the live delivery status of each topic's linked work.
+Same page design as the Claude-artifact version of this dashboard.
+
+**Self-contained pipeline** — one script, no intermediate data files:
+
+```
+python generator/gen_topic_queue.py             # pull Jira → write docs/topic-queue.html
+python generator/gen_topic_queue.py --selftest  # offline unit tests
+```
+
+Auth is identical to `pull_jira.py` (JIRA_EMAIL + JIRA_API_TOKEN env vars, or
+`generator/jira_creds.json`).
+
+**Automated:** the `update-topic-queue` GitHub Action (`.github/workflows/update-topic-queue.yml`)
+runs the selftest + generator daily at 12:00 UTC and on demand (Actions → Update Topic Queue →
+Run workflow), committing `docs/topic-queue.html` only when it changed. It needs two repo
+secrets — `JIRA_EMAIL` and `JIRA_API_TOKEN` (Settings → Secrets and variables → Actions) —
+created from an Atlassian API token (https://id.atlassian.com/manage-profile/security/api-tokens).
+
+Published at: https://thomas-reid-801.github.io/digital-workflow-monitor-sdms/topic-queue.html

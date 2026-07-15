@@ -553,6 +553,12 @@ def parent_page(prod_urls):
           '<div class="callout"><h3>⚠ Assign Teams on these first</h3>'
           '<p>%s</p><div class="actions">%s</div></div></section>' % (intro, "".join(hyg_acts)))
 
+    more_section = ('<section><h2>More dashboards</h2>'
+      '<p class="h2note">Other live views published from this repo.</p>'
+      '<div class="plist"><a class="pcard" href="topic-queue.html"><h3>Ascend Topic Queue →</h3>'
+      '<div class="meta">SDM + PM ranked topic backlog joined with live delivery status · '
+      'refreshed daily by the update-topic-queue GitHub Action</div></a></div></section>')
+
     counts = "; ".join("%s %s" % (proj, ", ".join("%s %d" % (pod["name"], pod["devs"]) for pod in PODS[proj]))
                        for proj in ACTIVE)
 
@@ -571,6 +577,7 @@ def parent_page(prod_urls):
       '</div></header>' % (tot_gap, catchup, weekly_h, weekly_i, wk_breakdown, min_run, min_pod) +
       '<section><h2>Products</h2><div class="plist">%s</div></section>' % cards +
       hygiene_section +
+      more_section +
       '<footer>Source: Jira (trekbikes.atlassian.net), pulled {{ASOF}}. Member counts confirmed by Thomas '
       '(%s). Method + item lists: SDM-Queue-Management/progress/funnel-analysis-2026-07-08.md.</footer>' % counts)
     return page("Pod Funnel Dashboards · {{ASOF}}", body)
