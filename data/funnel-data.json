@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-07-14",
+  "asOf": "2026-07-15",
   "burnPerDevPerWeek": 2,
   "reviewMinutesPerItem": 17.5,
   "jiraBase": "https://trekbikes.atlassian.net/issues/?jql=",
@@ -8,9 +8,9 @@
       "label": "TBN \u2014 Trekbikes.com",
       "file": "tbn.html",
       "noteam": {
-        "todo": 62,
+        "todo": 63,
         "ana": 1,
-        "rfd": 1
+        "rfd": 2
       },
       "pods": [
         {
@@ -28,8 +28,8 @@
             0,
             6
           ],
-          "anaOld": 6,
-          "rfdOld": 69,
+          "anaOld": 7,
+          "rfdOld": 70,
           "auto": [
             "TBN-13562",
             "TBN-16234",
@@ -51,15 +51,15 @@
           "genuine": 16,
           "ana": 5,
           "sdm": 0,
-          "rfd": 11,
+          "rfd": 12,
           "tgt": 9,
           "back": [
             14,
             5,
             4
           ],
-          "anaOld": 25,
-          "rfdOld": 78,
+          "anaOld": 13,
+          "rfdOld": 79,
           "auto": [
             "TBN-13631",
             "TBN-14145",
@@ -80,17 +80,17 @@
           "devs": 5,
           "todo": 15,
           "genuine": 14,
-          "ana": 6,
+          "ana": 7,
           "sdm": 0,
-          "rfd": 4,
+          "rfd": 5,
           "tgt": 15,
           "back": [
-            7,
-            10,
-            2
+            6,
+            5,
+            7
           ],
-          "anaOld": 25,
-          "rfdOld": 55,
+          "anaOld": 26,
+          "rfdOld": 56,
           "auto": [
             "TBN-10493",
             "TBN-14190",
@@ -117,15 +117,15 @@
           "genuine": 20,
           "ana": 6,
           "sdm": 0,
-          "rfd": 18,
+          "rfd": 19,
           "tgt": 21,
           "back": [
             5,
             6,
             3
           ],
-          "anaOld": 6,
-          "rfdOld": 92,
+          "anaOld": 7,
+          "rfdOld": 93,
           "auto": [
             "TBN-10077",
             "TBN-11849",
@@ -160,10 +160,10 @@
           "name": "Pod I",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-43",
           "devs": 4,
-          "todo": 18,
-          "genuine": 18,
-          "ana": 1,
-          "sdm": 1,
+          "todo": 14,
+          "genuine": 14,
+          "ana": 6,
+          "sdm": 2,
           "rfd": 10,
           "tgt": 12,
           "back": [
@@ -171,21 +171,17 @@
             0,
             1
           ],
-          "anaOld": 6,
-          "rfdOld": 76,
+          "anaOld": 7,
+          "rfdOld": 77,
           "auto": [
             "TBN-12281",
             "TBN-12782",
             "TBN-13070",
-            "TBN-15365",
             "TBN-16708",
             "TBN-16859",
-            "TBN-17624",
             "TBN-17633",
             "TBN-17956",
             "TBN-20184",
-            "TBN-20225",
-            "TBN-20234",
             "TBN-20276",
             "TBN-9334",
             "TBN-9335",
@@ -207,9 +203,9 @@
       "label": "Ascend (ASC)",
       "file": "asc.html",
       "noteam": {
-        "todo": 25,
-        "ana": 11,
-        "rfd": 34
+        "todo": 26,
+        "ana": 10,
+        "rfd": 33
       },
       "pods": [
         {
@@ -220,15 +216,15 @@
           "genuine": 12,
           "ana": 4,
           "sdm": 0,
-          "rfd": 5,
+          "rfd": 4,
           "tgt": 15,
           "back": [
             145,
             114,
             14
           ],
-          "anaOld": 25,
-          "rfdOld": 43,
+          "anaOld": 26,
+          "rfdOld": 44,
           "auto": [
             "ASC-1026",
             "ASC-2265",
@@ -251,8 +247,8 @@
           "name": "Neverest",
           "tid": "35ba84fb-8ac0-4cc3-b2bb-7ee20eba77f0",
           "devs": 5,
-          "todo": 10,
-          "genuine": 10,
+          "todo": 9,
+          "genuine": 9,
           "ana": 12,
           "sdm": 0,
           "rfd": 6,
@@ -262,8 +258,8 @@
             10,
             14
           ],
-          "anaOld": 25,
-          "rfdOld": 62,
+          "anaOld": 26,
+          "rfdOld": 63,
           "auto": [
             "ASC-4994",
             "ASC-5717",
@@ -279,23 +275,22 @@
           "name": "RockyBluff",
           "tid": "b922af32-67e8-4e75-b4a5-89e773eaf50e",
           "devs": 6,
-          "todo": 3,
-          "genuine": 3,
+          "todo": 2,
+          "genuine": 2,
           "ana": 12,
           "sdm": 0,
-          "rfd": 7,
+          "rfd": 8,
           "tgt": 18,
           "back": [
-            4,
-            79,
-            51
+            9,
+            77,
+            53
           ],
-          "anaOld": 25,
-          "rfdOld": 5,
+          "anaOld": 26,
+          "rfdOld": 6,
           "auto": [
             "ASC-1546",
-            "ASC-5642",
-            "ASC-9644"
+            "ASC-5642"
           ],
           "flag": []
         }
@@ -335,8 +330,7 @@
           "ASC-8766",
           "ASC-9297",
           "ASC-9431",
-          "ASC-9613",
-          "ASC-9655"
+          "ASC-9613"
         ],
         "note": " (mostly the Dedicated Testing-Client set)"
       },
@@ -349,7 +343,7 @@
       "noteam": {
         "todo": 0,
         "ana": 2,
-        "rfd": 0
+        "rfd": 1
       },
       "hygiene": {
         "kind": "generic"
@@ -359,24 +353,25 @@
           "name": "Pod J",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-58",
           "devs": 5,
-          "todo": 8,
-          "genuine": 8,
-          "ana": 6,
+          "todo": 9,
+          "genuine": 9,
+          "ana": 7,
           "sdm": 0,
-          "rfd": 11,
+          "rfd": 12,
           "tgt": 15,
-          "anaOld": 8,
-          "rfdOld": 57,
+          "anaOld": 9,
+          "rfdOld": 58,
           "auto": [
             "MBI-1667",
             "MBI-1836",
             "MBI-1911",
+            "MBI-2337",
             "MBI-2353",
             "MBI-589"
           ],
           "flag": [],
           "back": [
-            129,
+            131,
             30,
             14
           ]
@@ -388,7 +383,7 @@
       "file": "bi.html",
       "memoHeader": "BI",
       "noteam": {
-        "todo": 32,
+        "todo": 35,
         "ana": 0,
         "rfd": 1
       },
@@ -406,31 +401,31 @@
           "todo": 1,
           "genuine": 1,
           "ana": 2,
-          "sdm": 3,
+          "sdm": 2,
           "rfd": 45,
           "tgt": 9,
-          "anaOld": 8,
-          "rfdOld": 76,
+          "anaOld": 9,
+          "rfdOld": 77,
           "auto": [],
           "flag": [],
           "back": [
             74,
-            71,
-            32
+            68,
+            35
           ]
         },
         {
           "name": "Reports",
           "tid": "39d2f5d3-575f-40c4-8738-4aff0744ee4b",
           "devs": 5,
-          "todo": 21,
-          "genuine": 18,
-          "ana": 2,
+          "todo": 20,
+          "genuine": 17,
+          "ana": 1,
           "sdm": 0,
-          "rfd": 7,
+          "rfd": 9,
           "tgt": 15,
-          "anaOld": 1,
-          "rfdOld": 25,
+          "anaOld": 0,
+          "rfdOld": 26,
           "auto": [
             "BI-18556",
             "BI-19148",
@@ -442,7 +437,7 @@
             "BI-18641"
           ],
           "back": [
-            102,
+            103,
             6,
             1
           ]
