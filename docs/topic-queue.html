@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascend Topic Queue</title>
+<style>
+  :root { --bg:#F7F8F7; --surface:#FFFFFF; --ink:#1A2421; --muted:#5C6B66; --faint:#8A9691; --border:#E1E6E4; --accent:#0E6E63; --accent-ink:#0A5A51; --accent-soft:#E3F0EE; --good:#2E7D46; --good-soft:#E4F1E8; --warn:#9A6512; --warn-soft:#F7EDDA; --crit:#B3392E; --crit-soft:#F8E7E5; --hold:#5E6B8C; --hold-soft:#E9ECF4; --bar-active:#0E6E63; --bar-queued:#C3CCC9; --bar-hold:#8B99BD; --shadow:0 1px 3px rgba(26,36,33,0.07); }
+  @media (prefers-color-scheme: dark) { :root { --bg:#101615; --surface:#18201E; --ink:#E8EDEB; --muted:#93A29D; --faint:#6C7A75; --border:#2A3532; --accent:#3FBFAE; --accent-ink:#6ACFC1; --accent-soft:#16302C; --good:#58B878; --good-soft:#16301F; --warn:#D9A04A; --warn-soft:#33260F; --crit:#E0685C; --crit-soft:#391512; --hold:#8B99BD; --hold-soft:#1D2333; --bar-active:#3FBFAE; --bar-queued:#39443F; --bar-hold:#8B99BD; --shadow:0 1px 3px rgba(0,0,0,0.35); } }
+  :root[data-theme="dark"] { --bg:#101615; --surface:#18201E; --ink:#E8EDEB; --muted:#93A29D; --faint:#6C7A75; --border:#2A3532; --accent:#3FBFAE; --accent-ink:#6ACFC1; --accent-soft:#16302C; --good:#58B878; --good-soft:#16301F; --warn:#D9A04A; --warn-soft:#33260F; --crit:#E0685C; --crit-soft:#391512; --hold:#8B99BD; --hold-soft:#1D2333; --bar-active:#3FBFAE; --bar-queued:#39443F; --bar-hold:#8B99BD; --shadow:0 1px 3px rgba(0,0,0,0.35); }
+  :root[data-theme="light"] { --bg:#F7F8F7; --surface:#FFFFFF; --ink:#1A2421; --muted:#5C6B66; --faint:#8A9691; --border:#E1E6E4; --accent:#0E6E63; --accent-ink:#0A5A51; --accent-soft:#E3F0EE; --good:#2E7D46; --good-soft:#E4F1E8; --warn:#9A6512; --warn-soft:#F7EDDA; --crit:#B3392E; --crit-soft:#F8E7E5; --hold:#5E6B8C; --hold-soft:#E9ECF4; --bar-active:#0E6E63; --bar-queued:#C3CCC9; --bar-hold:#8B99BD; --shadow:0 1px 3px rgba(26,36,33,0.07); }
+  * { box-sizing:border-box; }
+  body { background:var(--bg); color:var(--ink); font-family:"Segoe UI Variable Text","Segoe UI","Avenir Next",-apple-system,"Helvetica Neue",sans-serif; line-height:1.5; margin:0; padding:2.5rem 1.25rem 4rem; }
+  .wrap { max-width:1080px; margin:0 auto; }
+  a { color:var(--accent-ink); text-decoration:none; } a:hover { text-decoration:underline; }
+  a:focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:2px; }
+  header { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:0.5rem 1.5rem; margin-bottom:0.4rem; }
+  h1 { font-family:"Segoe UI Variable Display","Segoe UI","Avenir Next",sans-serif; font-size:1.45rem; font-weight:650; letter-spacing:-0.01em; margin:0; text-wrap:balance; }
+  .meta { color:var(--muted); font-size:0.82rem; } .meta a { color:var(--muted); text-decoration:underline; text-decoration-color:var(--border); }
+  .subtitle { color:var(--muted); font-size:0.9rem; max-width:62ch; margin:0 0 1.6rem; }
+  .stats { display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.6rem; }
+  .stat { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:0.5rem 0.9rem 0.55rem; min-width:5.4rem; box-shadow:var(--shadow); }
+  .stat .n { font-size:1.35rem; font-weight:650; font-variant-numeric:tabular-nums; line-height:1.15; }
+  .stat .l { font-size:0.68rem; letter-spacing:0.07em; text-transform:uppercase; color:var(--muted); }
+  .stat.flagged .n { color:var(--crit); }
+  .attention { background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--warn); border-radius:8px; padding:0.85rem 1.1rem; margin-bottom:2rem; box-shadow:var(--shadow); }
+  .attention h2 { font-size:0.72rem; letter-spacing:0.09em; text-transform:uppercase; color:var(--warn); margin:0 0 0.5rem; font-weight:650; }
+  .attention ul { margin:0; padding-left:1.1rem; } .attention li { font-size:0.88rem; margin-bottom:0.3rem; max-width:90ch; } .attention li:last-child { margin-bottom:0; }
+  .queue-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem 1rem; margin-bottom:0.7rem; }
+  .queue-head h2 { font-size:0.78rem; letter-spacing:0.09em; text-transform:uppercase; color:var(--muted); font-weight:650; margin:0; }
+  .queue-tools { display:flex; align-items:center; flex-wrap:wrap; gap:0.5rem 1.1rem; }
+  .rerank { display:inline-block; border:1px solid var(--accent); color:var(--accent-ink); border-radius:99px; padding:0.22rem 0.75rem; font-size:0.76rem; font-weight:650; white-space:nowrap; }
+  .rerank:hover { background:var(--accent-soft); text-decoration:none; }
+  .barkey { font-size:0.75rem; color:var(--muted); display:flex; gap:0.9rem; flex-wrap:wrap; }
+  .dot { display:inline-block; width:0.55em; height:0.55em; border-radius:50%; margin-right:0.32em; vertical-align:0.02em; }
+  .dot.active { background:var(--bar-active); } .dot.queued { background:var(--bar-queued); } .dot.hold { background:var(--bar-hold); }
+  .queue { display:flex; flex-direction:column; gap:0.55rem; }
+  .row { display:grid; grid-template-columns:3.2rem 1fr 19rem; gap:0 1.25rem; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:0.95rem 1.15rem 1rem 0.9rem; box-shadow:var(--shadow); }
+  .rank { font-family:"Cascadia Code","SF Mono",Consolas,monospace; font-variant-numeric:tabular-nums; font-size:1.5rem; font-weight:600; color:var(--faint); text-align:center; line-height:1.2; padding-top:0.1rem; }
+  .row.focus .rank { color:var(--accent); }
+  .topic .titleline { display:flex; flex-wrap:wrap; align-items:baseline; gap:0.25rem 0.6rem; margin-bottom:0.28rem; }
+  .topic .name { font-size:1.02rem; font-weight:640; letter-spacing:-0.005em; } .topic .name a { color:var(--ink); }
+  .key { font-family:"Cascadia Code","SF Mono",Consolas,monospace; font-size:0.74rem; color:var(--faint); }
+  .nextstep { font-size:0.88rem; color:var(--muted); max-width:62ch; margin:0; } .nextstep strong { color:var(--ink); font-weight:600; } .nextstep.missing { color:var(--warn); }
+  .owner { font-size:0.78rem; color:var(--faint); margin-top:0.3rem; }
+  .chip { display:inline-block; font-size:0.68rem; font-weight:650; letter-spacing:0.05em; text-transform:uppercase; border-radius:99px; padding:0.13rem 0.55rem; white-space:nowrap; }
+  .chip.outline { border:1px solid var(--border); color:var(--muted); } .chip.good { background:var(--good-soft); color:var(--good); } .chip.warn { background:var(--warn-soft); color:var(--warn); } .chip.crit { background:var(--crit-soft); color:var(--crit); } .chip.hold { background:var(--hold-soft); color:var(--hold); } .chip.plan { background:var(--accent-soft); color:var(--accent-ink); }
+  .delivery { border-left:1px solid var(--border); padding-left:1.25rem; font-size:0.82rem; color:var(--muted); display:flex; flex-direction:column; gap:0.3rem; justify-content:center; }
+  .delivery .linkline { display:flex; flex-wrap:wrap; align-items:baseline; gap:0.25rem 0.55rem; }
+  .delivery .pname { font-weight:600; color:var(--ink); font-size:0.86rem; } .delivery .none { color:var(--faint); font-style:italic; }
+  .bar { display:flex; gap:2px; height:7px; border-radius:4px; overflow:hidden; margin:0.15rem 0 0.1rem; max-width:15.5rem; }
+  .bar span { display:block; height:100%; } .bar .s-active { background:var(--bar-active); } .bar .s-queued { background:var(--bar-queued); } .bar .s-hold { background:var(--bar-hold); }
+  .bar span:first-child { border-radius:4px 0 0 4px; } .bar span:last-child { border-radius:0 4px 4px 0; }
+  .counts { font-variant-numeric:tabular-nums; }
+  .movement { font-size:0.78rem; } .movement.quiet { color:var(--crit); font-weight:600; } .movement.fresh { color:var(--good); }
+  footer { margin-top:2.4rem; padding-top:1.2rem; border-top:1px solid var(--border); color:var(--muted); font-size:0.82rem; }
+  footer p { max-width:88ch; margin:0 0 0.5rem; }
+  footer code { font-family:"Cascadia Code","SF Mono",Consolas,monospace; font-size:0.78rem; background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:0.05rem 0.35rem; }
+  @media (max-width:860px) { .row { grid-template-columns:2.4rem 1fr; } .delivery { grid-column:2; border-left:none; border-top:1px dashed var(--border); padding-left:0; padding-top:0.6rem; margin-top:0.65rem; } }
+  @media (prefers-reduced-motion: no-preference) { .row { transition:border-color 120ms ease; } .row:hover { border-color:var(--faint); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Ascend Topic Queue</h1>
+    <div class="meta">
+      Snapshot &middot; Jul 15, 2026, 9:10 AM CT &middot;
+      <a href="https://trekbikes.atlassian.net/browse/ASC-9433">ASC-9433</a> &middot;
+      <a href="https://trekbikes.atlassian.net/jira/software/c/projects/ASC/boards/6316">re-rank board</a> &middot;
+      <a href="https://trekbikes.atlassian.net/issues?jql=parent%20%3D%20ASC-9433%20AND%20statusCategory%20%21%3D%20Done%20ORDER%20BY%20rank%20ASC">open in Jira</a>
+    </div>
+  </header>
+  <p class="subtitle">
+    One ranked list of everything competing for the team&rsquo;s attention &mdash; quick fixes, projects, and
+    compliance work side by side. Rank order is the priority; the right column shows whether the
+    linked delivery work is actually moving.
+  </p>
+
+  <div class="stats">
+    <div class="stat"><div class="n">10</div><div class="l">Topics</div></div>
+    <div class="stat"><div class="n">3</div><div class="l">Moving</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">Plan stage</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">On hold</div></div>
+    <div class="stat flagged"><div class="n">1</div><div class="l">Stalled</div></div>
+    <div class="stat flagged"><div class="n">2</div><div class="l">Undefined</div></div>
+  </div>
+
+  <section class="attention">
+    <h2>Needs a decision</h2>
+    <ul>
+      <li><strong>Urgent Support (rank 2) and High Priority Bugs (rank 4) have no next step or linked work.</strong> Write the next step, or they can&rsquo;t genuinely compete for focus.</li>
+      <li><strong>Italy VAT Rate Validation (rank 6) is stalled.</strong> Its linked project has zero items in flight and hasn&rsquo;t moved in 77 days. Kick it off with a next step, or rank it honestly lower.</li>
+      <li><strong>2 topics (ranks 9, 10) point at On Hold projects.</strong> Confirm the hold reason still stands &mdash; otherwise they&rsquo;re quietly consuming queue positions.</li>
+    </ul>
+  </section>
+
+  <div class="queue-head">
+    <h2>The queue</h2>
+    <div class="queue-tools">
+      <a class="rerank" href="https://trekbikes.atlassian.net/jira/software/c/projects/ASC/boards/6316">Re-rank on the board &#8599;</a>
+      <div class="barkey">
+        <span><span class="dot active"></span>Active</span>
+        <span><span class="dot queued"></span>Queued</span>
+        <span><span class="dot hold"></span>On hold</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="queue">
+
+    <div class="row focus">
+      <div class="rank">1</div>
+      <div class="topic">
+        <div class="titleline">
+          <span class="name"><a href="https://trekbikes.atlassian.net/browse/ASC-9613">Spain NINE_STD File Split (DOTS / NON-DOTS)</a></span>
+          <span class="key">ASC-9613</span>
+          <span class="chip outline">Ready for Development</span>
+          <span class="chip good">Moving</span>
+        </div>
+        <p class="nextstep"><strong>Next step:</strong> the delivery story is Ready for Development — get it picked up by a developer. Target is end of August 2026, with scope expanded to Spain, Italy, and France.</p>
+      </div>
+      <div class="delivery">
+        <div class="linkline">
+          <span class="pname"><a href="https://trekbikes.atlassian.net/browse/ASC-9269">ASC-9269</a> Split Spain NINE STD file between DOTS and NON-DOTS</span>
+        </div>
+        <span>Ready for Development &middot; no due date &middot; Nidhi Dad</span>
+        <span class="counts">Single story &mdash; no child breakdown</span>
+        <span class="movement ">Last movement Jul 10 (5 days)</span>
+      </div>
+    </div>
+
+    <div class="row focus">
+      <div class="rank">2</div>
+      <div class="topic">
+        <div class="titleline">
+          <span class="name"><a href="https://trekbikes.atlassian.net/browse/ASC-9479">Urgent Support</a></span>
+          <span class="key">ASC-9479</span>
+          <span class="chip outline">To Do</span>
+          <span class="chip warn">Needs definition</span>
+        </div>
+        <p class="nextstep missing">No next step written yet &mdash; what&rsquo;s the first action, and who is on it?</p>
+      </div>
+      <div class="delivery">
+        <span class="none">No linked work items</span>
+      </div>
+    </div>
+
+    <div class="row focus">
+      <div class="rank">3</div>
+      <div class="topic">
+        <div class="titleline">
+          <span class="name"><a href="https://trekbikes.atlassian.net/browse/ASC-9480">Stability and Performance</a></span>
+          <span class="key">ASC-9480</span>
+          <span class="chip outline">To Do</span>
+          <span class="chip good">Moving</span>
+        </div>
+        <p class="nextstep missing">No next step written yet &mdash; what&rsquo;s the first action, and who is on it?</p>
+      </div>
+      <div class="delivery">
+        <div class="linkline">
+          <span class="pname"><a href="https://trekbikes.atlassian.net/browse/ASC-7185">ASC-7185</a> Ascend Client Stability Fixes</span>
+        </div>
+        <span>Implementation &middot; due Aug 14 &middot; Tuphan Kundu</span>
+        <div class="bar" role="img" aria-label="91 open items: 52 active, 29 queued, 10 on hold"><span class="s-active" style="width:57.1%"></span><span class="s-queued" style="width:31.9%"></span><span class="s-hold" style="width:11.0%"></span></div>
+        <span class="counts">52 active &middot; 29 queued &middot; 10 on hold</span>
+        <span class="movement fresh">Moved today</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="rank">4</div>
+      <div class="topic">
+        <div class="titleline">
+          <span class="name"><a href="https://trekbikes.atlassian.net/browse/ASC-9481">High Priority Bugs</a></span>
+          <span class="key">ASC-9481</span>
+          <span class="chip outline">Backlog</span>
+          <span class="chip warn">Needs definition</span>
+        </div>
+        <p class="nextstep missing">No next step written yet &mdash; what&rsquo;s the first action, and who is on it?</p>
+      </div>
+      <div class="delivery">
+        <span class="none">No linked work items</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="rank">5</div>
+      <div class="topic">
+        <div class="titleline">
+          <span class="name"><a href="https://trekbikes.atlassian.net/browse/ASC-9478">Observability and Alerting</a></span>
+          <span class="key">ASC-9478</span>
+          <span class="chip outline">Backlog</span>
+          <span class="chip good">Moving</span>
+        </div>
+        <p class="nextstep missing">No next step written yet &mdash; what&rsquo;s the first action, and who is on it?</p>
+      </div>
+      <div class="delivery">
+        <div class="linkline">
+          <span class="pname"><a href="https://trekbikes.atlassian.net/browse/ASC-7184">ASC-7184</a> Ascend Observability &amp; Alerting</span>
+        </div>
+        <span>Planning &middot; due Aug 14 &middot; Tuphan Kundu</span>
+        <div class="bar" role="img" aria-label="80 open items: 25 active, 53 queued, 2 on hold"><span class="s-active" style="width:31.2%"></span><span class="s-queued" style="width:66.2%"></span><span class="s-hold" style="width:2.5%"></span></div>
+        <span class="counts">25 active &middot; 53 queued &middot; 2 on hold</span>
+        <span class="movement fresh">Moved today</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="rank">6</div>
+      <div class="topic">
+        <div class="titleline">
+          <span class="name"><a href="https://trekbikes.atlassian.net/browse/ASC-9482">Italy VAT Rate Validation</a></span>
+          <span class="key">ASC-9482</span>
+          <span class="chip outline">Backlog</span>
+          <span class="chip crit">Stalled</span>
+        </div>
+        <p class="nextstep missing">No next step written yet &mdash; what&rsquo;s the first action, and who is on it?</p>
+      </div>
+      <div class="delivery">
+        <div class="linkline">
+          <span class="pname"><a href="https://trekbikes.atlassian.net/browse/ASC-6164">ASC-6164</a> Ascend Italy VAT Rate Validation Enhancement</span>
+        </div>
+        <span>Backlog &middot; no due date &middot; Tuphan Kundu</span>
+        <div class="bar" role="img" aria-label="63 open items: 0 active, 63 queued, 0 on hold"><span class="s-queued" style="width:100.0%"></span></div>
+        <span class="counts">0 active &middot; 63 queued</span>
+        <span class="movement quiet">77 days without movement</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="rank">7</div>
+      <div class="topic">
+        <div class="titleline">
+          <span class="name"><a href="https://trekbikes.atlassian.net/browse/ASC-9436">Spain Verifactu Compliance Remediations</a></span>
+          <span class="key">ASC-9436</span>
+          <span class="chip outline">Backlog</span>
+          <span class="chip plan">Plan ready</span>
+        </div>
+        <p class="nextstep">Draft plan here: <a href="https://trekinfra-my.sharepoint.com/:t:/g/personal/thomas_reid_trekbikes_com/IQBfR9ehd9FTRIqxWPuB2CGTAWFpx7rLi2XoJmja4R5KMMQ?e=e1lClD">trekinfra-my.sharepoint.com</a>. Next step is to prioritize someone to review the plan, build out the work items that have been determined as needed, then sequence and time the work along other current commitments. </p><div class="owner">Owner: Eddy Cevilla</div>
+      </div>
+      <div class="delivery">
+        <span class="none">No Jira work yet &mdash; plan linked in the next step</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="rank">8</div>
+      <div class="topic">
+        <div class="titleline">
+          <span class="name"><a href="https://trekbikes.atlassian.net/browse/ASC-9435">Ascend DOTS DB Sizing Updates</a></span>
+          <span class="key">ASC-9435</span>
+          <span class="chip outline">Backlog</span>
+          <span class="chip plan">Plan ready</span>
+        </div>
+        <p class="nextstep">Claude plan populated here: <a href="https://trekinfra.sharepoint.com/:f:/s/ITDProjects/IgA2AKf-xgfIRK_vfNtU7PF9AVfp8cRW9aYYAqLKRM6FB1U?e=g4lYkN">trekinfra.sharepoint.com</a>, next step is to assign out an architect to review the technical side of the plan, and have someone review the compliance side of the plan. Can then align delivery with other commitments.</p><div class="owner">Owner: Eddy Cevilla</div>
+      </div>
+      <div class="delivery">
+        <span class="none">No Jira work yet &mdash; plan linked in the next step</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="rank">9</div>
+      <div class="topic">
+        <div class="titleline">
+          <span class="name"><a href="https://trekbikes.atlassian.net/browse/ASC-9483">Ascend Pay Referenced Refund</a></span>
+          <span class="key">ASC-9483</span>
+          <span class="chip outline">Backlog</span>
+          <span class="chip hold">On hold</span>
+        </div>
+        <p class="nextstep missing">No next step written yet &mdash; what&rsquo;s the first action, and who is on it?</p>
+      </div>
+      <div class="delivery">
+        <div class="linkline">
+          <span class="pname"><a href="https://trekbikes.atlassian.net/browse/ASC-5186">ASC-5186</a> Ascend Pay - Referenced Refund</span>
+        </div>
+        <span>On Hold &middot; due Oct 16 &middot; Tuphan Kundu</span>
+        <div class="bar" role="img" aria-label="68 open items: 5 active, 43 queued, 20 on hold"><span class="s-active" style="width:7.4%"></span><span class="s-queued" style="width:63.2%"></span><span class="s-hold" style="width:29.4%"></span></div>
+        <span class="counts">5 active &middot; 43 queued &middot; 20 on hold</span>
+        <span class="movement ">Last movement Jun 19 (26 days)</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="rank">10</div>
+      <div class="topic">
+        <div class="titleline">
+          <span class="name"><a href="https://trekbikes.atlassian.net/browse/ASC-9484">Ascend Pay Delayed/Pending Pay-By-Link</a></span>
+          <span class="key">ASC-9484</span>
+          <span class="chip outline">Backlog</span>
+          <span class="chip hold">On hold</span>
+        </div>
+        <p class="nextstep missing">No next step written yet &mdash; what&rsquo;s the first action, and who is on it?</p>
+      </div>
+      <div class="delivery">
+        <div class="linkline">
+          <span class="pname"><a href="https://trekbikes.atlassian.net/browse/ASC-6696">ASC-6696</a> Ascend Pay — Delayed / Pending Pay-By-Link</span>
+        </div>
+        <span>On Hold &middot; no due date &middot; Tuphan Kundu</span>
+        <div class="bar" role="img" aria-label="71 open items: 0 active, 71 queued, 0 on hold"><span class="s-queued" style="width:100.0%"></span></div>
+        <span class="counts">0 active &middot; 71 queued</span>
+        <span class="movement ">Last movement Jun 29 (16 days)</span>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p><strong>How this works.</strong> Each topic is one card under <a href="https://trekbikes.atlassian.net/browse/ASC-9433">ASC-9433</a>, whatever the size of the work behind it. Rank is the priority &mdash; re-order by dragging cards on the <a href="https://trekbikes.atlassian.net/jira/software/c/projects/ASC/boards/6316">re-rank board</a>. &ldquo;Active&rdquo; counts items genuinely in flight under the linked project (excluding On Hold); &ldquo;Queued&rdquo; is backlog; movement is the most recent update to any open child item.</p>
+    <p><strong>To refresh:</strong> run the <a href="https://github.com/thomas-reid-801/digital-workflow-monitor-sdms/actions/workflows/update-topic-queue.yml">Update Topic Queue workflow</a> (Actions &rarr; Run workflow) &mdash; it regenerates this page from live Jira. It also runs automatically every morning.</p>
+  </footer>
+</div>
+</body>
+</html>
