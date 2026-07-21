@@ -747,6 +747,67 @@
           ]
         }
       ]
+    },
+    "HRIS": {
+      "label": "HRIS \u2014 Human Resources Information Systems",
+      "file": "hris.html",
+      "memoHeader": "HRIS",
+      "noteam": {
+        "todo": 6,
+        "ana": 0,
+        "rfd": 0
+      },
+      "hygiene": {
+        "kind": "generic"
+      },
+      "pods": [
+        {
+          "name": "IT-HRIS",
+          "tid": "068009e7-a376-4f25-b3a3-f9cd5f6dc728",
+          "devs": 3,
+          "tgt": 9,
+          "todo": 25,
+          "genuine": 25,
+          "ana": 10,
+          "sdm": 0,
+          "rfd": 1,
+          "anaOld": 61,
+          "rfdOld": 32,
+          "auto": [
+            "HRIS-1038",
+            "HRIS-1074",
+            "HRIS-1280",
+            "HRIS-1470",
+            "HRIS-1819",
+            "HRIS-1820",
+            "HRIS-1906",
+            "HRIS-1947",
+            "HRIS-1982",
+            "HRIS-2008",
+            "HRIS-2096",
+            "HRIS-2297",
+            "HRIS-2325",
+            "HRIS-2330",
+            "HRIS-2336",
+            "HRIS-2347",
+            "HRIS-2352",
+            "HRIS-758",
+            "HRIS-812",
+            "HRIS-858",
+            "HRIS-862",
+            "HRIS-865",
+            "HRIS-883",
+            "HRIS-916",
+            "HRIS-957"
+          ],
+          "flag": [],
+          "back": [
+            143,
+            72,
+            161
+          ]
+        }
+      ]
     }
   }
 }
