@@ -808,6 +808,60 @@
           ]
         }
       ]
+    },
+    "PLM": {
+      "label": "PLM \u2014 Product Lifecycle Management",
+      "file": "plm.html",
+      "memoHeader": "PLM",
+      "noteam": {
+        "todo": 9,
+        "ana": 4,
+        "rfd": 0
+      },
+      "hygiene": {
+        "kind": "generic"
+      },
+      "pods": [
+        {
+          "name": "Pod A",
+          "match": "IT-PLM-Pod A",
+          "tid": "79cae92e-41be-4450-b981-83b1918dba85",
+          "devs": 2,
+          "tgt": 6,
+          "todo": 17,
+          "genuine": 17,
+          "ana": 1,
+          "sdm": 0,
+          "rfd": 1,
+          "anaOld": 4,
+          "rfdOld": 48,
+          "auto": [
+            "PLM-1013",
+            "PLM-103",
+            "PLM-1059",
+            "PLM-1149",
+            "PLM-133",
+            "PLM-1430",
+            "PLM-1717",
+            "PLM-21",
+            "PLM-23",
+            "PLM-290",
+            "PLM-2983",
+            "PLM-3001",
+            "PLM-3010",
+            "PLM-3011",
+            "PLM-412",
+            "PLM-53",
+            "PLM-649"
+          ],
+          "flag": [],
+          "back": [
+            3,
+            1,
+            92
+          ]
+        }
+      ]
     }
   }
 }
