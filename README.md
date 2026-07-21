@@ -19,6 +19,7 @@ Owner: Thomas Reid (thomas_reid@trekbikes.com)
 | `docs/crm.html` | CRM — BAPP-CRM, Communications |
 | `docs/hris.html` | HRIS — IT-HRIS |
 | `docs/plm.html` | PLM — Pod A |
+| `docs/ii.html` | II — All II teams (8 teams merged), CLE-DVO |
 | `docs/topic-queue.html` | Ascend Topic Queue — ranked topic backlog under ASC-9433 |
 
 Every bar, count, and backlog age segment links directly to the Jira JQL behind it.

@@ -161,7 +161,7 @@
           "devs": 4,
           "todo": 15,
           "genuine": 15,
-          "ana": 3,
+          "ana": 4,
           "sdm": 0,
           "rfd": 5,
           "tgt": 12,
@@ -347,7 +347,7 @@
       "memoHeader": "MBI",
       "noteam": {
         "todo": 0,
-        "ana": 10,
+        "ana": 11,
         "rfd": 5
       },
       "hygiene": {
@@ -407,8 +407,8 @@
           "todo": 3,
           "genuine": 3,
           "ana": 6,
-          "sdm": 1,
-          "rfd": 50,
+          "sdm": 2,
+          "rfd": 51,
           "tgt": 9,
           "anaOld": 4,
           "rfdOld": 83,
@@ -549,9 +549,9 @@
           "tid": "86584bdd-e1c9-43e9-8d6b-4171c9f5ab58",
           "devs": 3,
           "tgt": 9,
-          "todo": 13,
-          "genuine": 13,
-          "ana": 2,
+          "todo": 12,
+          "genuine": 12,
+          "ana": 3,
           "sdm": 0,
           "rfd": 4,
           "anaOld": 32,
@@ -566,7 +566,6 @@
             "ERP-5503",
             "ERP-5504",
             "ERP-6472",
-            "ERP-8639",
             "ERP-8929",
             "ERP-9339",
             "ERP-9417"
@@ -859,6 +858,80 @@
             3,
             1,
             92
+          ]
+        }
+      ]
+    },
+    "II": {
+      "label": "II \u2014 IT Infrastructure + Cloud Engineering",
+      "file": "ii.html",
+      "memoHeader": "II",
+      "noteam": {
+        "todo": 1,
+        "ana": 0,
+        "rfd": 0
+      },
+      "hygiene": {
+        "kind": "generic"
+      },
+      "pods": [
+        {
+          "name": "All II teams",
+          "tids": [
+            "595c58ad-ac78-418b-bc6a-3a800759157d",
+            "de95a93c-4483-430b-821b-224b014f0506",
+            "d8a45705-53c8-40fb-ad39-23aac2cacb48",
+            "b63413d0-31cc-4453-b947-69398c255258",
+            "c151a5ca-e234-459a-b1c5-cda8b6e953eb",
+            "e42a011c-dc9a-4209-b9a5-97e68bd72726",
+            "4020188c-cc63-4d7d-9fea-112fc3315d08",
+            "f301f6dc-9262-4eea-8bc4-ff148a341601"
+          ],
+          "devs": 23,
+          "tgt": 69,
+          "todo": 8,
+          "genuine": 7,
+          "ana": 20,
+          "sdm": 0,
+          "rfd": 1,
+          "anaOld": 71,
+          "rfdOld": 18,
+          "auto": [
+            "II-12921",
+            "II-12922",
+            "II-12923",
+            "II-12924",
+            "II-12925",
+            "II-12926",
+            "II-12927"
+          ],
+          "flag": [
+            "II-12928"
+          ],
+          "back": [
+            1469,
+            114,
+            66
+          ]
+        },
+        {
+          "name": "CLE-DVO",
+          "tid": "d3c57035-f59c-4ebd-9ac5-af524c4f58cb",
+          "devs": 5,
+          "tgt": 15,
+          "todo": 0,
+          "genuine": 0,
+          "ana": 1,
+          "sdm": 0,
+          "rfd": 0,
+          "anaOld": 4,
+          "rfdOld": 0,
+          "auto": [],
+          "flag": [],
+          "back": [
+            7,
+            0,
+            1
           ]
         }
       ]
