@@ -8,7 +8,7 @@
       "label": "TBN \u2014 Trekbikes.com",
       "file": "tbn.html",
       "noteam": {
-        "todo": 70,
+        "todo": 71,
         "ana": 1,
         "rfd": 1
       },
@@ -19,9 +19,9 @@
           "devs": 4,
           "todo": 9,
           "genuine": 8,
-          "ana": 5,
+          "ana": 4,
           "sdm": 0,
-          "rfd": 20,
+          "rfd": 18,
           "tgt": 12,
           "back": [
             7,
@@ -51,10 +51,10 @@
           "genuine": 15,
           "ana": 2,
           "sdm": 1,
-          "rfd": 13,
+          "rfd": 12,
           "tgt": 9,
           "back": [
-            12,
+            11,
             5,
             4
           ],
@@ -113,15 +113,15 @@
           "todo": 28,
           "genuine": 22,
           "ana": 3,
-          "sdm": 1,
-          "rfd": 17,
+          "sdm": 0,
+          "rfd": 18,
           "tgt": 21,
           "back": [
             5,
             6,
-            3
+            2
           ],
-          "anaOld": 7,
+          "anaOld": 5,
           "rfdOld": 99,
           "auto": [
             "TBN-10077",
@@ -161,9 +161,9 @@
           "devs": 4,
           "todo": 15,
           "genuine": 15,
-          "ana": 4,
+          "ana": 3,
           "sdm": 0,
-          "rfd": 5,
+          "rfd": 6,
           "tgt": 12,
           "back": [
             21,
@@ -193,8 +193,8 @@
       "hygiene": {
         "kind": "priority-queue",
         "parent": "TBN-16487",
-        "queueSize": 67,
-        "teamlessCount": 52
+        "queueSize": 68,
+        "teamlessCount": 53
       },
       "memoHeader": "TBN"
     },
@@ -280,12 +280,12 @@
           "devs": 6,
           "todo": 5,
           "genuine": 5,
-          "ana": 12,
+          "ana": 11,
           "sdm": 0,
-          "rfd": 3,
+          "rfd": 4,
           "tgt": 18,
           "back": [
-            5,
+            6,
             77,
             53
           ],
@@ -347,8 +347,8 @@
       "memoHeader": "MBI",
       "noteam": {
         "todo": 0,
-        "ana": 11,
-        "rfd": 5
+        "ana": 10,
+        "rfd": 6
       },
       "hygiene": {
         "kind": "generic"
@@ -360,7 +360,7 @@
           "devs": 5,
           "todo": 10,
           "genuine": 10,
-          "ana": 3,
+          "ana": 7,
           "sdm": 0,
           "rfd": 10,
           "tgt": 15,
@@ -377,7 +377,7 @@
           ],
           "flag": [],
           "back": [
-            129,
+            136,
             36,
             15
           ]
@@ -407,8 +407,8 @@
           "todo": 3,
           "genuine": 3,
           "ana": 6,
-          "sdm": 2,
-          "rfd": 51,
+          "sdm": 0,
+          "rfd": 53,
           "tgt": 9,
           "anaOld": 4,
           "rfdOld": 83,
@@ -445,7 +445,7 @@
           ],
           "flag": [],
           "back": [
-            110,
+            111,
             5,
             1
           ]
@@ -769,7 +769,7 @@
           "genuine": 25,
           "ana": 10,
           "sdm": 0,
-          "rfd": 1,
+          "rfd": 2,
           "anaOld": 61,
           "rfdOld": 32,
           "auto": [
@@ -891,7 +891,7 @@
           "tgt": 69,
           "todo": 8,
           "genuine": 7,
-          "ana": 20,
+          "ana": 19,
           "sdm": 0,
           "rfd": 1,
           "anaOld": 71,
