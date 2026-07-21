@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRM Pod Funnel · 2026-07-21</title>
+<style>
+  :root { --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --blue:#2a78d6; --blue-soft:#86b6ef; --blue-deep:#104281;
+    --age1:#86b6ef; --age2:#2a78d6; --age3:#104281;
+    --good:#0ca30c; --good-text:#006300; --critical:#d03b3b; --critical-tint:rgba(208,59,59,0.10);
+    --warn:#fab219; --code-bg:#f0efec; }
+  @media (prefers-color-scheme: dark) { :root { --page:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink-2:#c3c2b7;
+    --muted:#898781; --grid:#2c2c2a; --baseline:#383835; --border:rgba(255,255,255,0.10);
+    --blue:#3987e5; --blue-soft:#6da7ec; --blue-deep:#184f95; --age1:#6da7ec; --age2:#3987e5; --age3:#184f95;
+    --good:#0ca30c; --good-text:#0ca30c; --critical:#d03b3b; --critical-tint:rgba(208,59,59,0.16); --code-bg:#232322; } }
+  :root[data-theme="dark"] { --page:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink-2:#c3c2b7;
+    --muted:#898781; --grid:#2c2c2a; --baseline:#383835; --border:rgba(255,255,255,0.10);
+    --blue:#3987e5; --blue-soft:#6da7ec; --blue-deep:#184f95; --age1:#6da7ec; --age2:#3987e5; --age3:#184f95;
+    --good:#0ca30c; --good-text:#0ca30c; --critical:#d03b3b; --critical-tint:rgba(208,59,59,0.16); --code-bg:#232322; }
+  :root[data-theme="light"] { --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e;
+    --muted:#898781; --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --blue:#2a78d6; --blue-soft:#86b6ef; --blue-deep:#104281; --age1:#86b6ef; --age2:#2a78d6; --age3:#104281;
+    --good:#0ca30c; --good-text:#006300; --critical:#d03b3b; --critical-tint:rgba(208,59,59,0.10); --code-bg:#f0efec; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--page); color:var(--ink); font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  .wrap { max-width:1080px; margin:0 auto; padding:36px 24px 72px; }
+  .eyebrow { text-transform:uppercase; letter-spacing:.09em; font-size:11.5px; font-weight:600; color:var(--muted); }
+  .eyebrow a { color:var(--blue); text-decoration:none; }
+  .eyebrow a:hover { text-decoration:underline; }
+  h1 { font-size:26px; line-height:1.2; margin:6px 0 4px; text-wrap:balance; }
+  .sub { color:var(--ink-2); max-width:76ch; margin:0; }
+  .sub strong { color:var(--ink); }
+  section { margin-top:42px; }
+  h2 { font-size:19px; margin:0 0 4px; }
+  .h2note { color:var(--ink-2); font-size:13.5px; margin:0 0 14px; max-width:82ch; }
+  .tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:12px; margin-top:24px; }
+  .tile { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:15px 18px 13px; }
+  .tile .v { font-size:28px; font-weight:700; line-height:1.15; }
+  .tile .v small { font-size:15px; font-weight:600; color:var(--ink-2); }
+  .tile .v.bad { color:var(--critical); }
+  .tile .v.ok { color:var(--good-text); }
+  .tile .k { font-size:12.5px; color:var(--ink-2); margin-top:3px; }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 22px 16px; margin-top:12px; }
+  a.trackline { display:grid; grid-template-columns:150px 1fr 170px; gap:14px; align-items:center; padding:8px 0;
+    text-decoration:none; color:inherit; border-radius:6px; }
+  a.trackline + a.trackline { border-top:1px solid var(--grid); }
+  a.trackline:hover .bname, a.trackline:focus-visible .bname { color:var(--blue); text-decoration:underline; }
+  .bname { font-size:13.5px; font-weight:600; }
+  .bname .dv { display:block; font-weight:400; font-size:11.5px; color:var(--muted); }
+  .track { position:relative; height:22px; }
+  .track .rail { position:absolute; inset:4px 0; background:var(--page); border-radius:4px; border:1px solid var(--grid); }
+  .seg { position:absolute; top:4px; bottom:4px; border-radius:4px; }
+  .seg.cur { background:var(--blue); }
+  .seg.over { background:var(--blue-soft); }
+  .seg.deficit { background:var(--critical-tint); border:1.5px dashed var(--critical); }
+  .ttick { position:absolute; top:0; bottom:0; width:2px; background:var(--ink); }
+  .ttick::after { content:attr(data-t); position:absolute; top:-1px; left:5px; font-size:10.5px; color:var(--muted); }
+  .bval { font-size:13px; color:var(--ink-2); font-variant-numeric:tabular-nums; }
+  .bval b { color:var(--ink); font-size:14.5px; }
+  .gap-chip { display:inline-block; margin-left:7px; padding:1px 7px; border-radius:99px; font-size:11.5px; font-weight:700; }
+  .gap-chip.bad { background:var(--critical-tint); color:var(--critical); }
+  .gap-chip.ok { background:rgba(12,163,12,0.10); color:var(--good-text); }
+  .legend { display:flex; flex-wrap:wrap; gap:16px; margin:12px 2px 0; font-size:12px; color:var(--ink-2); }
+  .legend .li { display:inline-flex; align-items:center; gap:6px; }
+  .sw { width:14px; height:10px; border-radius:3px; display:inline-block; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:12px; margin-top:12px; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:17px 20px 15px; display:flex; flex-direction:column; gap:9px; }
+  .card.alert { border-left:3px solid var(--critical); }
+  .card h3 { margin:0; font-size:15.5px; display:flex; align-items:baseline; justify-content:space-between; gap:8px; }
+  .chip { font-size:11.5px; font-weight:700; padding:1px 8px; border-radius:99px; white-space:nowrap; }
+  .chip.bad { background:var(--critical-tint); color:var(--critical); }
+  .chip.ok { background:rgba(12,163,12,0.10); color:var(--good-text); }
+  .story { font-size:13.5px; color:var(--ink-2); margin:0; }
+  .story strong { color:var(--ink); }
+  .runway { font-size:12.5px; color:var(--ink-2); display:flex; align-items:center; gap:7px; }
+  .dot { width:9px; height:9px; border-radius:50%; flex:none; }
+  .dot.r { background:var(--critical); } .dot.y { background:var(--warn); } .dot.g { background:var(--good); }
+  .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:2px; align-items:center; }
+  a.act { font:600 12.5px/1 system-ui,-apple-system,"Segoe UI",sans-serif; padding:8px 12px; border-radius:7px;
+    border:1px solid var(--border); background:var(--page); color:var(--ink); text-decoration:none; }
+  a.act.primary { background:var(--blue); border-color:var(--blue); color:#fff; }
+  a.act:hover { border-color:var(--blue); }
+  a.act.primary:hover { background:var(--blue-deep); border-color:var(--blue-deep); }
+  span.act.none { font:600 12.5px/1 system-ui,sans-serif; padding:8px 12px; border-radius:7px; border:1px solid var(--border); color:var(--muted); }
+  button.copy { font:600 12.5px/1 system-ui,-apple-system,"Segoe UI",sans-serif; padding:8px 12px; border-radius:7px;
+    border:1px solid var(--border); background:var(--blue); border-color:var(--blue); color:#fff; cursor:pointer; }
+  button.copy:hover { background:var(--blue-deep); }
+  details { margin-top:2px; }
+  summary { font-size:12px; color:var(--muted); cursor:pointer; }
+  .jql { margin-top:6px; background:var(--code-bg); border:1px solid var(--grid); border-radius:7px; padding:10px 12px;
+    font:12px/1.5 ui-monospace,Consolas,monospace; color:var(--ink-2); white-space:pre-wrap; word-break:break-all; max-height:200px; overflow-y:auto; }
+  .memo { background:var(--code-bg); border:1px solid var(--grid); border-radius:7px; padding:12px 14px;
+    font-size:13px; color:var(--ink-2); white-space:pre-wrap; }
+  .hint { font-size:12px; color:var(--muted); margin:0; }
+  .tblwrap { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:13.5px; }
+  th { text-align:right; font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); font-weight:600;
+    padding:8px 10px; border-bottom:1px solid var(--baseline); }
+  th:first-child, td:first-child { text-align:left; }
+  td { padding:8px 10px; border-bottom:1px solid var(--grid); text-align:right; font-variant-numeric:tabular-nums; color:var(--ink-2); }
+  td:first-child { color:var(--ink); font-weight:600; }
+  td a { color:var(--blue); text-decoration:none; }
+  td a:hover { text-decoration:underline; }
+  td .note { font-weight:400; color:var(--muted); font-size:12px; }
+  tr.dim td { color:var(--muted); font-weight:400; }
+  td.hot, td.hot a { color:var(--critical); font-weight:700; }
+  td.good { color:var(--good-text); font-weight:600; }
+  .callout { border-left:3px solid var(--warn); background:var(--surface); border-top:1px solid var(--border);
+    border-right:1px solid var(--border); border-bottom:1px solid var(--border); border-radius:0 10px 10px 0;
+    padding:15px 20px; margin-top:12px; }
+  .callout h3 { margin:0 0 6px; font-size:15px; }
+  .callout p { margin:6px 0; color:var(--ink-2); font-size:14px; max-width:90ch; }
+  .callout p strong { color:var(--ink); }
+  .arow { display:grid; grid-template-columns:150px 1fr 130px; gap:14px; align-items:center; padding:8px 0; }
+  .arow + .arow { border-top:1px solid var(--grid); }
+  .aname { font-size:13.5px; font-weight:600; }
+  .abar { height:18px; display:flex; gap:2px; }
+  .abar a { height:100%; border-radius:3px; min-width:4px; display:block; }
+  .abar a:hover { outline:2px solid var(--ink); outline-offset:1px; }
+  .a1 { background:var(--age1); } .a2 { background:var(--age2); } .a3 { background:var(--age3); }
+  .atot { font-size:13px; color:var(--ink-2); font-variant-numeric:tabular-nums; }
+  .atot a { color:var(--blue); text-decoration:none; }
+  .atot a:hover { text-decoration:underline; }
+  .plist { display:grid; grid-template-columns:repeat(auto-fit,minmax(400px,1fr)); gap:14px; margin-top:16px; }
+  a.pcard { display:block; background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:20px 22px; text-decoration:none; color:inherit; }
+  a.pcard:hover { border-color:var(--blue); }
+  a.pcard h3 { margin:0 0 2px; font-size:17px; color:var(--blue); }
+  a.pcard .meta { font-size:13px; color:var(--ink-2); margin-bottom:10px; }
+  .mini { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:8px; }
+  .mini .m { background:var(--page); border:1px solid var(--grid); border-radius:7px; padding:8px 10px; }
+  .mini .mv { font-size:17px; font-weight:700; }
+  .mini .mv.bad { color:var(--critical); }
+  .mini .mk { font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+  footer { margin-top:44px; color:var(--muted); font-size:12.5px; max-width:92ch; }
+  :focus-visible { outline:2px solid var(--blue); outline-offset:2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="eyebrow"><a href="index.html">← All products</a> &nbsp;·&nbsp; SDM Queue Management · pulled from Jira 2026-07-21</div><h1>CRM — Customer Relationship Management — pod funnel</h1><p class="sub">Target: <strong>3 items per developer</strong> in Ready for Development, per pod. Working rate: <strong>2 items per developer per week</strong>. Every bar and count links straight to the Jira query behind it.</p><div class="tiles"><div class="tile"><div class="v bad">−6</div><div class="k">items behind the 3-per-dev Ready-for-Dev target (Communications −6)</div></div><div class="tile"><div class="v">0.0 h <small>+ 3.5 h/wk</small></div><div class="k">refinement: one-time catch-up + weekly to hold pace (17.5 min/item)</div></div><div class="tile"><div class="v">12 / wk</div><div class="k">items PMs must move Backlog → To Do weekly (2 per dev per week)</div></div><div class="tile"><div class="v bad">≈0 days</div><div class="k">until the first pod (Communications) has an empty To Do queue</div></div></div></header><section><h2>Ready for Dev vs target</h2><p class="h2note">Solid = in Ready for Dev. Black tick = target. Dashed red = gap. <b>Click a row to open that pod’s Ready-for-Dev queue in Jira.</b></p><div class="panel"><a class="trackline" href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226d1b2f37-5881-4826-9d32-6d78cf77022e-60%22%20AND%20status%20%3D%20%22Ready%20for%20Development%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener" title="Open BAPP-CRM Ready for Development in Jira"><div class="bname">BAPP-CRM<span class="dv">4 devs ✓</span></div><div class="track"><div class="rail"></div><div class="seg cur" style="left:0;width:92.59%"></div><div class="ttick" style="left:92.59%" data-t="12"></div></div><div class="bval"><b>12</b> / 12<span class="gap-chip ok">+0</span></div></a>
+<a class="trackline" href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226125b846-0409-4ba8-9934-c4c1a99d1d21%22%20AND%20status%20%3D%20%22Ready%20for%20Development%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener" title="Open Communications Ready for Development in Jira"><div class="bname">Communications<span class="dv">2 devs ✓</span></div><div class="track"><div class="rail"></div><div class="seg deficit" style="left:calc(0.00% + 2px);width:calc(46.30% - 2px)"></div><div class="ttick" style="left:46.30%" data-t="6"></div></div><div class="bval"><b>0</b> / 6<span class="gap-chip bad">−6</span></div></a></div><div class="legend"><span class="li"><span class="sw" style="background:var(--blue)"></span>in Ready for Dev</span><span class="li"><span class="sw" style="width:2px;height:12px;border-radius:0;background:var(--ink)"></span>target = 3 × devs</span><span class="li"><span class="sw" style="background:var(--critical-tint);border:1.5px dashed var(--critical)"></span>gap</span><span class="li"><span class="sw" style="background:var(--blue-soft)"></span>over target</span></div></section><section><h2>Act on each pod</h2><p class="h2note">Auto-story queue = genuine To Do items (pod Team + live parent) ready for Claude enrichment. To Do Needs Review = items that failed that check and need a human decision.</p><div class="cards"><div class="card"><h3>BAPP-CRM <span class="chip ok">+0 over</span></h3><p class="story"><strong>0 over target</strong>. Sustaining it needs <strong>2.3 h/wk</strong> of refinement and 8 items/wk arriving into To Do — currently holding 7 genuine items.</p><div class="runway"><span class="dot r"></span>To Do runs dry in ~<b>&nbsp;6 days</b>&nbsp;at 2 items/dev/week</div><div class="actions"><a class="act primary" href="https://trekbikes.atlassian.net/issues/?jql=key%20in%20%28CRM-8909%2C%20CRM-8916%2C%20CRM-8944%2C%20CRM-8957%2C%20CRM-8969%2C%20CRM-8976%2C%20CRM-9546%29%20ORDER%20BY%20Rank%20ASC" target="_blank" rel="noopener">Auto-story queue ↗ (7)</a><a class="act" href="https://trekbikes.atlassian.net/issues/?jql=key%20in%20%28CRM-8652%2C%20CRM-8915%2C%20CRM-8918%2C%20CRM-8940%2C%20CRM-8949%2C%20CRM-8954%2C%20CRM-8978%2C%20CRM-9315%2C%20CRM-9322%2C%20CRM-9323%2C%20CRM-9324%2C%20CRM-9325%2C%20CRM-9326%2C%20CRM-9327%2C%20CRM-9340%29" target="_blank" rel="noopener">To Do Needs Review ↗ (15)</a><a class="act" href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226d1b2f37-5881-4826-9d32-6d78cf77022e-60%22%20AND%20status%20%3D%20%22Backlog%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29%20ORDER%20BY%20created%20ASC" target="_blank" rel="noopener">Backlog ↗ (166)</a></div><p class="hint">Auto-story queue = genuine To Do items ready for enrichment. Tell Claude: “Tag these with claude-ready-sdm, assign to me, then run auto story.”</p><details><summary>Show queries</summary><div class="jql">-- auto-story queue --
+key in (CRM-8909, CRM-8916, CRM-8944, CRM-8957, CRM-8969, CRM-8976, CRM-9546) ORDER BY Rank ASC
+
+-- To Do needs review --
+key in (CRM-8652, CRM-8915, CRM-8918, CRM-8940, CRM-8949, CRM-8954, CRM-8978, CRM-9315, CRM-9322, CRM-9323, CRM-9324, CRM-9325, CRM-9326, CRM-9327, CRM-9340)
+
+-- backlog (ranked oldest first) --
+project = "CRM" AND team = "6d1b2f37-5881-4826-9d32-6d78cf77022e-60" AND status = "Backlog" AND issuetype not in subtaskIssueTypes() ORDER BY created ASC</div></details></div>
+<div class="card alert"><h3>Communications <span class="chip bad">−6 to target</span></h3><p class="story"><strong>6 short</strong> of its 6-item target. Catch-up: review 0 from Analysis — one <strong>0.0 h session</strong> closes all but 6; then To Do is empty. Steady state then needs <strong>1.2 h/wk</strong> of refinement (4 items/wk).</p><div class="runway"><span class="dot r"></span>To Do runs dry in ~<b>&nbsp;0 days</b>&nbsp;at 2 items/dev/week</div><div class="actions"><a class="act primary" href="https://trekbikes.atlassian.net/issues/?jql=key%20in%20%28%29%20ORDER%20BY%20Rank%20ASC" target="_blank" rel="noopener">Auto-story queue ↗ (0)</a><span class="act none">No flagged items</span><a class="act" href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226125b846-0409-4ba8-9934-c4c1a99d1d21%22%20AND%20status%20%3D%20%22Backlog%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29%20ORDER%20BY%20created%20ASC" target="_blank" rel="noopener">Backlog ↗ (99)</a></div><p class="hint">Auto-story queue = genuine To Do items ready for enrichment. Tell Claude: “Tag these with claude-ready-sdm, assign to me, then run auto story.”</p><details><summary>Show queries</summary><div class="jql">-- auto-story queue --
+key in () ORDER BY Rank ASC
+
+-- backlog (ranked oldest first) --
+project = "CRM" AND team = "6125b846-0409-4ba8-9934-c4c1a99d1d21" AND status = "Backlog" AND issuetype not in subtaskIssueTypes() ORDER BY created ASC</div></details></div></div></section><div class="callout"><h3>⚠ Data hygiene — the fastest lever</h3><p><strong>6 of CRM’s 18 Ready-for-Dev items have no Team</strong>. If they’re pod-owned, setting Team closes most of the gap with zero refinement. If deliberately podless, the dashboard should exclude them.</p><div class="actions"><a class="act primary" href="https://trekbikes.atlassian.net/issues/?jql=key%20in%20%28CRM-8762%2C%20CRM-8763%2C%20CRM-9880%2C%20CRM-9883%2C%20CRM-9889%2C%20CRM-9930%29" target="_blank" rel="noopener">No-team Ready-for-Dev ↗ (6)</a><a class="act" href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20status%20%3D%20%22To%20Do%22%20AND%20team%20is%20EMPTY%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener">No-team To Do ↗ (16)</a></div><details><summary>Show queries</summary><div class="jql">key in (CRM-8762, CRM-8763, CRM-9880, CRM-9883, CRM-9889, CRM-9930)
+
+project = "CRM" AND status = "To Do" AND team is EMPTY AND issuetype not in subtaskIssueTypes()</div></details></div><section><h2>The full funnel</h2><p class="h2note">Every count is a link — click through to the exact Jira query.</p><div class="panel tblwrap"><table><thead><tr><th>Pod</th><th>Devs</th><th>To Do</th><th>genuine</th><th>auto-story ready</th><th>Analysis</th><th>SDM Review</th><th>Ready for Dev</th><th>Target</th><th>Gap</th></tr></thead><tbody><tr><td>BAPP-CRM</td><td>4</td><td><a href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226d1b2f37-5881-4826-9d32-6d78cf77022e-60%22%20AND%20status%20%3D%20%22To%20Do%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener">22</a></td><td>7</td><td>7</td><td><a href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226d1b2f37-5881-4826-9d32-6d78cf77022e-60%22%20AND%20status%20%3D%20%22Analysis%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener">15</a></td><td><a href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226d1b2f37-5881-4826-9d32-6d78cf77022e-60%22%20AND%20status%20%3D%20%22SDM%20Review%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener">0</a></td><td><a href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226d1b2f37-5881-4826-9d32-6d78cf77022e-60%22%20AND%20status%20%3D%20%22Ready%20for%20Development%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener">12</a></td><td>12</td><td class="good">+0</td></tr>
+<tr><td>Communications</td><td>2</td><td><a href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226125b846-0409-4ba8-9934-c4c1a99d1d21%22%20AND%20status%20%3D%20%22To%20Do%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener">0</a></td><td>0</td><td>0</td><td><a href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226125b846-0409-4ba8-9934-c4c1a99d1d21%22%20AND%20status%20%3D%20%22Analysis%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener">0</a></td><td><a href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226125b846-0409-4ba8-9934-c4c1a99d1d21%22%20AND%20status%20%3D%20%22SDM%20Review%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener">0</a></td><td><a href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226125b846-0409-4ba8-9934-c4c1a99d1d21%22%20AND%20status%20%3D%20%22Ready%20for%20Development%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener">0</a></td><td>6</td><td class="hot">−6</td></tr>
+<tr class="dim"><td>(no team — invisible to pods)</td><td>—</td><td><a href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20status%20%3D%20%22To%20Do%22%20AND%20team%20is%20EMPTY%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener">16</a></td><td>—</td><td>—</td><td><a href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20status%20%3D%20%22Analysis%22%20AND%20team%20is%20EMPTY%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener">1</a></td><td>—</td><td><a href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20status%20%3D%20%22Ready%20for%20Development%22%20AND%20team%20is%20EMPTY%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29" target="_blank" rel="noopener">6</a></td><td>—</td><td>—</td></tr></tbody></table></div></section><section><h2>Sustaining it — the weekly baseline</h2><p class="h2note">At 2 items per developer per week, each pod needs this much flowing through refinement AND arriving into To Do, every week.</p><div class="panel tblwrap"><table><thead><tr><th>Pod</th><th>Devs</th><th>Weekly burn (2 × devs)</th><th>Weekly pod refinement</th><th>PM replenishment / wk</th><th>To Do runway today</th></tr></thead><tbody><tr><td>BAPP-CRM</td><td>4</td><td>8 items</td><td>2.3 h</td><td>8 items</td><td class="hot">~6 days</td></tr>
+<tr><td>Communications</td><td>2</td><td>4 items</td><td>1.2 h</td><td>4 items</td><td class="hot">~0 days</td></tr>
+<tr class="dim"><td>Total</td><td>6</td><td>12 items</td><td>3.5 h</td><td>12 items</td><td>—</td></tr></tbody></table></div></section><section><h2>Backlog depth — the raw material</h2><p class="h2note">Team-tagged Backlog by age. Click a segment to open that age band in Jira; click the total for the pod’s full ranked backlog.</p><div class="panel"><div class="arow"><div class="aname">BAPP-CRM</div><div class="abar"><a class="a1" style="width:66.87%" href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226d1b2f37-5881-4826-9d32-6d78cf77022e-60%22%20AND%20status%20%3D%20%22Backlog%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29%20AND%20created%20%3E%3D%20-26w%20ORDER%20BY%20created%20ASC" target="_blank" rel="noopener" title="BAPP-CRM — < 6 mo: 111 items — open in Jira"></a><a class="a2" style="width:10.84%" href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226d1b2f37-5881-4826-9d32-6d78cf77022e-60%22%20AND%20status%20%3D%20%22Backlog%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29%20AND%20created%20%3C%20-26w%20AND%20created%20%3E%3D%20-52w%20ORDER%20BY%20created%20ASC" target="_blank" rel="noopener" title="BAPP-CRM — 6–12 mo: 18 items — open in Jira"></a><a class="a3" style="width:22.29%" href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226d1b2f37-5881-4826-9d32-6d78cf77022e-60%22%20AND%20status%20%3D%20%22Backlog%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29%20AND%20created%20%3C%20-52w%20ORDER%20BY%20created%20ASC" target="_blank" rel="noopener" title="BAPP-CRM — > 12 mo: 37 items — open in Jira"></a></div><div class="atot"><a href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226d1b2f37-5881-4826-9d32-6d78cf77022e-60%22%20AND%20status%20%3D%20%22Backlog%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29%20ORDER%20BY%20created%20ASC" target="_blank" rel="noopener"><b>166</b> items ↗</a></div></div>
+<div class="arow"><div class="aname">Communications</div><div class="abar"><a class="a1" style="width:51.20%" href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226125b846-0409-4ba8-9934-c4c1a99d1d21%22%20AND%20status%20%3D%20%22Backlog%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29%20AND%20created%20%3E%3D%20-26w%20ORDER%20BY%20created%20ASC" target="_blank" rel="noopener" title="Communications — < 6 mo: 85 items — open in Jira"></a><a class="a2" style="width:8.43%" href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226125b846-0409-4ba8-9934-c4c1a99d1d21%22%20AND%20status%20%3D%20%22Backlog%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29%20AND%20created%20%3C%20-26w%20AND%20created%20%3E%3D%20-52w%20ORDER%20BY%20created%20ASC" target="_blank" rel="noopener" title="Communications — 6–12 mo: 14 items — open in Jira"></a></div><div class="atot"><a href="https://trekbikes.atlassian.net/issues/?jql=project%20%3D%20%22CRM%22%20AND%20team%20%3D%20%226125b846-0409-4ba8-9934-c4c1a99d1d21%22%20AND%20status%20%3D%20%22Backlog%22%20AND%20issuetype%20not%20in%20subtaskIssueTypes%28%29%20ORDER%20BY%20created%20ASC" target="_blank" rel="noopener"><b>99</b> items ↗</a></div></div></div><div class="legend"><span class="li"><span class="sw a1"></span>&lt; 6 months</span><span class="li"><span class="sw a2"></span>6–12 months</span><span class="li"><span class="sw a3"></span>&gt; 12 months</span></div></section><section><h2>Product manager note</h2><p class="h2note">Copy and send, or point PMs at this page — every ask below is also a clickable query above.</p><div class="panel"><div class="memo" id="memo-crm">CRM funnel status — 2026-07-21
+Target: 3 items per developer in Ready for Development, per pod. Working rate: 2 items per developer per week.
+
+Per pod — where they stand and what they need:
+• BAPP-CRM (4 devs): +0 over target (12 of 12); no catch-up needed.
+   – Needs 8 items/week into To Do; holding 7 genuine (≈6 days of runway); top-up +9 now for a 2-week buffer. Backlog available: 166 items.
+• Communications (2 devs): 6 SHORT (0 of 6); catch-up = one 0.0 h refinement (0 from Analysis); still 6 short after — needs Backlog→To Do.
+   – Needs 4 items/week into To Do; holding 0 genuine (≈0 days of runway); top-up +8 now for a 2-week buffer. Backlog available: 99 items.
+
+• Product total ask: 12 items/week moved Backlog → To Do, every week; one-time top-up +17 to give every pod a 2-week buffer.
+• Fastest fix first: 6 Ready-for-Dev items carry no Team. Assigning Teams may close most of the gap with zero new refinement.
+• Urgency: Communications’s To Do queue is ~0 DAYS from empty. When To Do empties, the funnel stalls and Ready-for-Dev cannot recover.
+• Pod capacity: keeping pace costs each pod 1.2–2.3 h/week of refinement (17.5 min/item).
+
+Detail: SDM-Queue-Management/progress/funnel-analysis-2026-07-08.md</div><div class="actions" style="margin-top:10px"><button class="copy" data-for="memo-crm">Copy note</button></div></div></section><footer>Source: Jira (trekbikes.atlassian.net), pulled 2026-07-21; subtasks excluded; pod = Team field. Member counts confirmed by Thomas 2026-07-08. Model: 2 items/dev/week burn &amp; replenishment; 17.5 min/item pod review. Method + item lists: SDM-Queue-Management/progress/funnel-analysis-2026-07-08.md. “ASC” must stay quoted in JQL.</footer>
+</div>
+
+<script>
+document.addEventListener("click", function (e) {
+  var b = e.target.closest("button.copy"); if (!b) return;
+  var el = document.getElementById(b.getAttribute("data-for")); if (!el) return;
+  var text = el.textContent;
+  function done(){ var o=b.textContent; b.textContent="Copied \u2713"; setTimeout(function(){ b.textContent=o; },1600); }
+  if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, fb); } else fb();
+  function fb(){ var t=document.createElement("textarea"); t.value=text; t.style.position="fixed"; t.style.opacity="0";
+    document.body.appendChild(t); t.select(); try{ document.execCommand("copy"); done(); }catch(err){} document.body.removeChild(t); }
+});
+</script>
+
+</body>
+</html>

@@ -16,6 +16,7 @@ Owner: Thomas Reid (thomas_reid@trekbikes.com)
 | `docs/mbi.html` | MBI (Mobile, iOS + Android) — Pod J |
 | `docs/bi.html` | BI (Business Intelligence) — BI Data, Reports |
 | `docs/erp.html` | ERP — Dyno-POD, POD$TARS, Team Toddler, Tech Blasters, The PodFathers |
+| `docs/crm.html` | CRM — BAPP-CRM, Communications |
 | `docs/topic-queue.html` | Ascend Topic Queue — ranked topic backlog under ASC-9433 |
 
 Every bar, count, and backlog age segment links directly to the Jira JQL behind it.
