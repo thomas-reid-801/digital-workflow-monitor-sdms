@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-07-21",
+  "asOf": "2026-07-24",
   "burnPerDevPerWeek": 2,
   "reviewMinutesPerItem": 17.5,
   "jiraBase": "https://trekbikes.atlassian.net/issues/?jql=",
@@ -17,19 +17,19 @@
           "name": "Pod B",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-11",
           "devs": 4,
-          "todo": 9,
+          "todo": 8,
           "genuine": 8,
-          "ana": 4,
+          "ana": 3,
           "sdm": 0,
-          "rfd": 18,
+          "rfd": 17,
           "tgt": 12,
           "back": [
-            7,
+            5,
             0,
             6
           ],
-          "anaOld": 13,
-          "rfdOld": 76,
+          "anaOld": 10,
+          "rfdOld": 79,
           "auto": [
             "TBN-13562",
             "TBN-16234",
@@ -39,9 +39,7 @@
             "TBN-19599",
             "TBN-19735"
           ],
-          "flag": [
-            "TBN-19715"
-          ]
+          "flag": []
         },
         {
           "name": "Pod C",
@@ -49,17 +47,17 @@
           "devs": 3,
           "todo": 15,
           "genuine": 15,
-          "ana": 2,
-          "sdm": 1,
-          "rfd": 12,
+          "ana": 7,
+          "sdm": 0,
+          "rfd": 13,
           "tgt": 9,
           "back": [
             11,
             5,
             4
           ],
-          "anaOld": 8,
-          "rfdOld": 85,
+          "anaOld": 2,
+          "rfdOld": 35,
           "auto": [
             "TBN-13631",
             "TBN-14145",
@@ -78,29 +76,27 @@
           "name": "Pod D",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-13",
           "devs": 5,
-          "todo": 12,
-          "genuine": 11,
-          "ana": 6,
+          "todo": 10,
+          "genuine": 9,
+          "ana": 2,
           "sdm": 0,
-          "rfd": 4,
+          "rfd": 6,
           "tgt": 15,
           "back": [
-            7,
-            5,
-            7
+            6,
+            1,
+            11
           ],
-          "anaOld": 32,
-          "rfdOld": 62,
+          "anaOld": 35,
+          "rfdOld": 65,
           "auto": [
             "TBN-10493",
             "TBN-14190",
             "TBN-14202",
-            "TBN-16305",
             "TBN-16724",
             "TBN-18657",
             "TBN-18668",
-            "TBN-18670",
-            "TBN-20466"
+            "TBN-18670"
           ],
           "flag": [
             "TBN-10491"
@@ -110,19 +106,19 @@
           "name": "Pod E",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-41",
           "devs": 7,
-          "todo": 28,
-          "genuine": 22,
-          "ana": 3,
-          "sdm": 0,
-          "rfd": 18,
+          "todo": 25,
+          "genuine": 19,
+          "ana": 7,
+          "sdm": 2,
+          "rfd": 17,
           "tgt": 21,
           "back": [
-            5,
+            6,
             6,
             2
           ],
-          "anaOld": 5,
-          "rfdOld": 99,
+          "anaOld": 3,
+          "rfdOld": 84,
           "auto": [
             "TBN-10077",
             "TBN-11849",
@@ -140,9 +136,6 @@
             "TBN-16511",
             "TBN-19232",
             "TBN-20128",
-            "TBN-20229",
-            "TBN-20254",
-            "TBN-20387",
             "TBN-20388",
             "TBN-2154"
           ],
@@ -159,9 +152,9 @@
           "name": "Pod I",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-43",
           "devs": 4,
-          "todo": 15,
-          "genuine": 15,
-          "ana": 3,
+          "todo": 13,
+          "genuine": 13,
+          "ana": 2,
           "sdm": 0,
           "rfd": 6,
           "tgt": 12,
@@ -170,17 +163,15 @@
             0,
             1
           ],
-          "anaOld": 6,
-          "rfdOld": 83,
+          "anaOld": 0,
+          "rfdOld": 7,
           "auto": [
             "TBN-12281",
             "TBN-12782",
-            "TBN-13070",
             "TBN-16708",
             "TBN-16859",
             "TBN-17389",
             "TBN-17956",
-            "TBN-20184",
             "TBN-20276",
             "TBN-9334",
             "TBN-9335",
@@ -193,8 +184,8 @@
       "hygiene": {
         "kind": "priority-queue",
         "parent": "TBN-16487",
-        "queueSize": 68,
-        "teamlessCount": 53
+        "queueSize": 80,
+        "teamlessCount": 55
       },
       "memoHeader": "TBN"
     },
@@ -203,29 +194,28 @@
       "file": "asc.html",
       "noteam": {
         "todo": 24,
-        "ana": 13,
-        "rfd": 32
+        "ana": 14,
+        "rfd": 31
       },
       "pods": [
         {
           "name": "Mt Doom",
           "tid": "00e0a321-1a65-4714-8827-648fd91d2f7e",
           "devs": 5,
-          "todo": 16,
-          "genuine": 15,
-          "ana": 4,
+          "todo": 15,
+          "genuine": 14,
+          "ana": 3,
           "sdm": 0,
-          "rfd": 3,
+          "rfd": 4,
           "tgt": 15,
           "back": [
-            137,
-            121,
+            134,
+            124,
             14
           ],
-          "anaOld": 5,
-          "rfdOld": 50,
+          "anaOld": 8,
+          "rfdOld": 53,
           "auto": [
-            "ASC-10033",
             "ASC-1026",
             "ASC-2265",
             "ASC-3685",
@@ -249,21 +239,20 @@
           "name": "Neverest",
           "tid": "35ba84fb-8ac0-4cc3-b2bb-7ee20eba77f0",
           "devs": 5,
-          "todo": 10,
-          "genuine": 10,
-          "ana": 11,
+          "todo": 9,
+          "genuine": 9,
+          "ana": 10,
           "sdm": 0,
           "rfd": 6,
           "tgt": 15,
           "back": [
             71,
-            10,
-            14
+            9,
+            15
           ],
-          "anaOld": 8,
-          "rfdOld": 69,
+          "anaOld": 11,
+          "rfdOld": 72,
           "auto": [
-            "ASC-10036",
             "ASC-4994",
             "ASC-5717",
             "ASC-5983",
@@ -278,21 +267,20 @@
           "name": "RockyBluff",
           "tid": "b922af32-67e8-4e75-b4a5-89e773eaf50e",
           "devs": 6,
-          "todo": 5,
-          "genuine": 5,
+          "todo": 4,
+          "genuine": 4,
           "ana": 11,
           "sdm": 0,
-          "rfd": 4,
+          "rfd": 3,
           "tgt": 18,
           "back": [
             6,
-            77,
-            53
+            76,
+            54
           ],
-          "anaOld": 32,
-          "rfdOld": 11,
+          "anaOld": 35,
+          "rfdOld": 3,
           "auto": [
-            "ASC-10039",
             "ASC-1546",
             "ASC-5642",
             "ASC-9945",
@@ -334,7 +322,6 @@
           "ASC-8764",
           "ASC-8765",
           "ASC-8766",
-          "ASC-9431",
           "ASC-9613"
         ],
         "note": " (mostly the Dedicated Testing-Client set)"
@@ -346,7 +333,7 @@
       "file": "mbi.html",
       "memoHeader": "MBI",
       "noteam": {
-        "todo": 0,
+        "todo": 1,
         "ana": 10,
         "rfd": 6
       },
@@ -358,27 +345,28 @@
           "name": "Pod J",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-58",
           "devs": 5,
-          "todo": 10,
-          "genuine": 10,
-          "ana": 7,
+          "todo": 11,
+          "genuine": 11,
+          "ana": 8,
           "sdm": 0,
-          "rfd": 10,
+          "rfd": 13,
           "tgt": 15,
-          "anaOld": 8,
-          "rfdOld": 64,
+          "anaOld": 11,
+          "rfdOld": 67,
           "auto": [
-            "MBI-1667",
             "MBI-1836",
             "MBI-1911",
             "MBI-2353",
+            "MBI-2374",
             "MBI-2433",
             "MBI-2472",
+            "MBI-2722",
             "MBI-589"
           ],
           "flag": [],
           "back": [
-            136,
-            36,
+            135,
+            43,
             15
           ]
         }
@@ -389,7 +377,7 @@
       "file": "bi.html",
       "memoHeader": "BI",
       "noteam": {
-        "todo": 27,
+        "todo": 24,
         "ana": 0,
         "rfd": 0
       },
@@ -406,48 +394,41 @@
           "devs": 3,
           "todo": 3,
           "genuine": 3,
-          "ana": 6,
+          "ana": 4,
           "sdm": 0,
-          "rfd": 53,
+          "rfd": 49,
           "tgt": 9,
           "anaOld": 4,
-          "rfdOld": 83,
+          "rfdOld": 86,
           "auto": [
-            "BI-17799",
+            "BI-16171",
             "BI-18611"
           ],
           "flag": [],
           "back": [
-            76,
-            65,
-            41
+            74,
+            59,
+            47
           ]
         },
         {
           "name": "Reports",
           "tid": "39d2f5d3-575f-40c4-8738-4aff0744ee4b",
           "devs": 5,
-          "todo": 20,
-          "genuine": 20,
+          "todo": 7,
+          "genuine": 7,
           "ana": 2,
           "sdm": 0,
           "rfd": 8,
           "tgt": 15,
           "anaOld": 0,
-          "rfdOld": 32,
-          "auto": [
-            "BI-17589",
-            "BI-18140",
-            "BI-18556",
-            "BI-18557",
-            "BI-19032",
-            "BI-19149"
-          ],
+          "rfdOld": 35,
+          "auto": [],
           "flag": [],
           "back": [
-            111,
-            5,
-            1
+            116,
+            8,
+            4
           ]
         }
       ]
@@ -457,9 +438,9 @@
       "file": "erp.html",
       "memoHeader": "ERP",
       "noteam": {
-        "todo": 44,
+        "todo": 41,
         "ana": 0,
-        "rfd": 0
+        "rfd": 1
       },
       "hygiene": {
         "kind": "generic"
@@ -474,13 +455,13 @@
           "genuine": 8,
           "ana": 2,
           "sdm": 0,
-          "rfd": 3,
-          "anaOld": 32,
-          "rfdOld": 7,
+          "rfd": 2,
+          "anaOld": 35,
+          "rfdOld": 2,
           "auto": [
             "ERP-10033",
             "ERP-10049",
-            "ERP-10223",
+            "ERP-10205",
             "ERP-10879",
             "ERP-8891",
             "ERP-8923",
@@ -499,13 +480,13 @@
           "tid": "b1c986c6-d98a-468f-908c-1d50a1d7babd",
           "devs": 5,
           "tgt": 15,
-          "todo": 28,
-          "genuine": 27,
+          "todo": 26,
+          "genuine": 26,
           "ana": 3,
           "sdm": 0,
-          "rfd": 9,
-          "anaOld": 32,
-          "rfdOld": 14,
+          "rfd": 10,
+          "anaOld": 10,
+          "rfdOld": 17,
           "auto": [
             "ERP-10026",
             "ERP-10044",
@@ -516,9 +497,8 @@
             "ERP-10608",
             "ERP-10609",
             "ERP-10673",
-            "ERP-10709",
             "ERP-10849",
-            "ERP-10883",
+            "ERP-10889",
             "ERP-10921",
             "ERP-4192",
             "ERP-6794",
@@ -535,11 +515,9 @@
             "ERP-9735",
             "ERP-9737"
           ],
-          "flag": [
-            "ERP-10889"
-          ],
+          "flag": [],
           "back": [
-            8,
+            7,
             3,
             0
           ]
@@ -551,11 +529,11 @@
           "tgt": 9,
           "todo": 12,
           "genuine": 12,
-          "ana": 3,
+          "ana": 2,
           "sdm": 0,
-          "rfd": 4,
-          "anaOld": 32,
-          "rfdOld": 6,
+          "rfd": 2,
+          "anaOld": 35,
+          "rfdOld": 9,
           "auto": [
             "ERP-10245",
             "ERP-10274",
@@ -587,7 +565,7 @@
           "ana": 5,
           "sdm": 0,
           "rfd": 0,
-          "anaOld": 32,
+          "anaOld": 35,
           "rfdOld": 0,
           "auto": [
             "ERP-10028",
@@ -619,7 +597,7 @@
           ],
           "flag": [],
           "back": [
-            6,
+            8,
             0,
             0
           ]
@@ -633,9 +611,9 @@
           "genuine": 9,
           "ana": 1,
           "sdm": 3,
-          "rfd": 8,
-          "anaOld": 32,
-          "rfdOld": 84,
+          "rfd": 9,
+          "anaOld": 35,
+          "rfdOld": 87,
           "auto": [
             "ERP-10011",
             "ERP-10888",
@@ -653,7 +631,7 @@
           ],
           "back": [
             59,
-            1,
+            2,
             0
           ]
         }
@@ -666,7 +644,7 @@
       "noteam": {
         "todo": 16,
         "ana": 1,
-        "rfd": 6
+        "rfd": 7
       },
       "hygiene": {
         "kind": "noteam-rfd",
@@ -676,7 +654,8 @@
           "CRM-9880",
           "CRM-9883",
           "CRM-9889",
-          "CRM-9930"
+          "CRM-9930",
+          "CRM-9935"
         ],
         "note": ""
       },
@@ -688,11 +667,11 @@
           "tgt": 12,
           "todo": 22,
           "genuine": 7,
-          "ana": 15,
+          "ana": 10,
           "sdm": 0,
-          "rfd": 12,
-          "anaOld": 81,
-          "rfdOld": 132,
+          "rfd": 16,
+          "anaOld": 84,
+          "rfdOld": 135,
           "auto": [
             "CRM-8909",
             "CRM-8916",
@@ -720,7 +699,7 @@
             "CRM-9340"
           ],
           "back": [
-            111,
+            107,
             18,
             37
           ]
@@ -740,7 +719,7 @@
           "auto": [],
           "flag": [],
           "back": [
-            85,
+            84,
             14,
             0
           ]
@@ -767,11 +746,11 @@
           "tgt": 9,
           "todo": 25,
           "genuine": 25,
-          "ana": 10,
+          "ana": 11,
           "sdm": 0,
           "rfd": 2,
-          "anaOld": 61,
-          "rfdOld": 32,
+          "anaOld": 64,
+          "rfdOld": 35,
           "auto": [
             "HRIS-1038",
             "HRIS-1074",
@@ -832,8 +811,8 @@
           "ana": 1,
           "sdm": 0,
           "rfd": 1,
-          "anaOld": 4,
-          "rfdOld": 48,
+          "anaOld": 7,
+          "rfdOld": 51,
           "auto": [
             "PLM-1013",
             "PLM-103",
@@ -889,13 +868,13 @@
           ],
           "devs": 23,
           "tgt": 69,
-          "todo": 8,
-          "genuine": 7,
-          "ana": 19,
+          "todo": 11,
+          "genuine": 10,
+          "ana": 16,
           "sdm": 0,
           "rfd": 1,
-          "anaOld": 71,
-          "rfdOld": 18,
+          "anaOld": 74,
+          "rfdOld": 21,
           "auto": [
             "II-12921",
             "II-12922",
@@ -903,14 +882,17 @@
             "II-12924",
             "II-12925",
             "II-12926",
-            "II-12927"
+            "II-12927",
+            "II-9580",
+            "II-9588",
+            "II-9590"
           ],
           "flag": [
             "II-12928"
           ],
           "back": [
-            1469,
-            114,
+            1429,
+            117,
             66
           ]
         },
@@ -924,7 +906,7 @@
           "ana": 1,
           "sdm": 0,
           "rfd": 0,
-          "anaOld": 4,
+          "anaOld": 7,
           "rfdOld": 0,
           "auto": [],
           "flag": [],
