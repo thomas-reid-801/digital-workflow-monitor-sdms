@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-07-24",
+  "asOf": "2026-08-18",
   "burnPerDevPerWeek": 2,
   "reviewMinutesPerItem": 17.5,
   "jiraBase": "https://trekbikes.atlassian.net/issues/?jql=",
@@ -8,36 +8,34 @@
       "label": "TBN \u2014 Trekbikes.com",
       "file": "tbn.html",
       "noteam": {
-        "todo": 71,
-        "ana": 1,
-        "rfd": 1
+        "todo": 93,
+        "ana": 2,
+        "rfd": 4
       },
       "pods": [
         {
           "name": "Pod B",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-11",
           "devs": 4,
-          "todo": 8,
-          "genuine": 8,
-          "ana": 3,
+          "todo": 7,
+          "genuine": 7,
+          "ana": 8,
           "sdm": 0,
-          "rfd": 17,
+          "rfd": 16,
           "tgt": 12,
           "back": [
-            5,
+            7,
             0,
-            6
+            7
           ],
-          "anaOld": 10,
-          "rfdOld": 79,
+          "anaOld": 25,
+          "rfdOld": 104,
           "auto": [
             "TBN-13562",
             "TBN-16234",
             "TBN-18871",
-            "TBN-19234",
-            "TBN-19598",
-            "TBN-19599",
-            "TBN-19735"
+            "TBN-21279",
+            "TBN-21336"
           ],
           "flag": []
         },
@@ -45,30 +43,25 @@
           "name": "Pod C",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-12",
           "devs": 3,
-          "todo": 15,
-          "genuine": 15,
-          "ana": 7,
-          "sdm": 0,
-          "rfd": 13,
+          "todo": 5,
+          "genuine": 5,
+          "ana": 5,
+          "sdm": 2,
+          "rfd": 17,
           "tgt": 9,
           "back": [
-            11,
-            5,
-            4
+            4,
+            0,
+            5
           ],
-          "anaOld": 2,
-          "rfdOld": 35,
+          "anaOld": 8,
+          "rfdOld": 60,
           "auto": [
-            "TBN-13631",
-            "TBN-14145",
-            "TBN-16124",
-            "TBN-16125",
-            "TBN-16126",
+            "TBN-11213",
+            "TBN-13336",
             "TBN-16403",
-            "TBN-16865",
-            "TBN-16881",
-            "TBN-16888",
-            "TBN-19497"
+            "TBN-19497",
+            "TBN-20263"
           ],
           "flag": []
         },
@@ -76,49 +69,45 @@
           "name": "Pod D",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-13",
           "devs": 5,
-          "todo": 10,
-          "genuine": 9,
-          "ana": 2,
+          "todo": 7,
+          "genuine": 7,
+          "ana": 13,
           "sdm": 0,
-          "rfd": 6,
+          "rfd": 10,
           "tgt": 15,
           "back": [
-            6,
+            2,
             1,
-            11
+            10
           ],
-          "anaOld": 35,
-          "rfdOld": 65,
+          "anaOld": 11,
+          "rfdOld": 11,
           "auto": [
+            "TBN-10491",
             "TBN-10493",
-            "TBN-14190",
-            "TBN-14202",
-            "TBN-16724",
-            "TBN-18657",
-            "TBN-18668",
-            "TBN-18670"
+            "TBN-16622",
+            "TBN-19391",
+            "TBN-21458"
           ],
-          "flag": [
-            "TBN-10491"
-          ]
+          "flag": []
         },
         {
           "name": "Pod E",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-41",
           "devs": 7,
-          "todo": 25,
-          "genuine": 19,
-          "ana": 7,
-          "sdm": 2,
-          "rfd": 17,
+          "todo": 29,
+          "genuine": 23,
+          "ana": 0,
+          "sdm": 0,
+          "rfd": 23,
           "tgt": 21,
           "back": [
-            6,
-            6,
-            2
+            9,
+            5,
+            3
           ],
-          "anaOld": 3,
-          "rfdOld": 84,
+          "anaOld": 0,
+          "rfdOld": 109,
           "auto": [
             "TBN-10077",
             "TBN-11849",
@@ -126,7 +115,6 @@
             "TBN-14305",
             "TBN-14330",
             "TBN-14867",
-            "TBN-14941",
             "TBN-15211",
             "TBN-15439",
             "TBN-15440",
@@ -134,10 +122,15 @@
             "TBN-15442",
             "TBN-15443",
             "TBN-16511",
-            "TBN-19232",
             "TBN-20128",
-            "TBN-20388",
-            "TBN-2154"
+            "TBN-21012",
+            "TBN-21063",
+            "TBN-21088",
+            "TBN-21269",
+            "TBN-21332",
+            "TBN-21390",
+            "TBN-2154",
+            "TBN-5715"
           ],
           "flag": [
             "TBN-12170",
@@ -152,27 +145,25 @@
           "name": "Pod I",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-43",
           "devs": 4,
-          "todo": 13,
-          "genuine": 13,
-          "ana": 2,
+          "todo": 12,
+          "genuine": 12,
+          "ana": 20,
           "sdm": 0,
-          "rfd": 6,
+          "rfd": 8,
           "tgt": 12,
           "back": [
-            21,
+            11,
             0,
             1
           ],
-          "anaOld": 0,
-          "rfdOld": 7,
+          "anaOld": 8,
+          "rfdOld": 12,
           "auto": [
             "TBN-12281",
             "TBN-12782",
-            "TBN-16708",
-            "TBN-16859",
-            "TBN-17389",
-            "TBN-17956",
-            "TBN-20276",
+            "TBN-12814",
+            "TBN-19433",
+            "TBN-20256",
             "TBN-9334",
             "TBN-9335",
             "TBN-9336",
@@ -184,8 +175,8 @@
       "hygiene": {
         "kind": "priority-queue",
         "parent": "TBN-16487",
-        "queueSize": 80,
-        "teamlessCount": 55
+        "queueSize": 93,
+        "teamlessCount": 61
       },
       "memoHeader": "TBN"
     },
@@ -193,73 +184,76 @@
       "label": "Ascend (ASC)",
       "file": "asc.html",
       "noteam": {
-        "todo": 24,
+        "todo": 44,
         "ana": 14,
-        "rfd": 31
+        "rfd": 33
       },
       "pods": [
         {
           "name": "Mt Doom",
           "tid": "00e0a321-1a65-4714-8827-648fd91d2f7e",
           "devs": 5,
-          "todo": 15,
-          "genuine": 14,
-          "ana": 3,
+          "todo": 10,
+          "genuine": 10,
+          "ana": 2,
           "sdm": 0,
-          "rfd": 4,
+          "rfd": 11,
           "tgt": 15,
           "back": [
-            134,
-            124,
-            14
+            143,
+            159,
+            41
           ],
-          "anaOld": 8,
-          "rfdOld": 53,
+          "anaOld": 11,
+          "rfdOld": 11,
           "auto": [
             "ASC-1026",
-            "ASC-2265",
             "ASC-3685",
             "ASC-4162",
             "ASC-5694",
-            "ASC-5736",
             "ASC-6794",
             "ASC-6883",
             "ASC-7213",
-            "ASC-7214",
-            "ASC-7215",
+            "ASC-7371",
             "ASC-7415",
-            "ASC-8128",
             "ASC-8207"
           ],
-          "flag": [
-            "ASC-7985"
-          ]
+          "flag": []
         },
         {
           "name": "Neverest",
           "tid": "35ba84fb-8ac0-4cc3-b2bb-7ee20eba77f0",
           "devs": 5,
-          "todo": 9,
-          "genuine": 9,
-          "ana": 10,
+          "todo": 18,
+          "genuine": 18,
+          "ana": 2,
           "sdm": 0,
-          "rfd": 6,
+          "rfd": 10,
           "tgt": 15,
           "back": [
-            71,
-            9,
-            15
+            82,
+            8,
+            16
           ],
           "anaOld": 11,
-          "rfdOld": 72,
+          "rfdOld": 60,
           "auto": [
             "ASC-4994",
             "ASC-5717",
             "ASC-5983",
+            "ASC-603",
+            "ASC-7211",
+            "ASC-7212",
+            "ASC-7216",
+            "ASC-7219",
+            "ASC-7374",
+            "ASC-7472",
+            "ASC-7474",
+            "ASC-7475",
+            "ASC-7476",
+            "ASC-7627",
             "ASC-7801",
-            "ASC-899",
-            "ASC-9515",
-            "ASC-9661"
+            "ASC-899"
           ],
           "flag": []
         },
@@ -267,24 +261,30 @@
           "name": "RockyBluff",
           "tid": "b922af32-67e8-4e75-b4a5-89e773eaf50e",
           "devs": 6,
-          "todo": 4,
-          "genuine": 4,
-          "ana": 11,
+          "todo": 10,
+          "genuine": 10,
+          "ana": 2,
           "sdm": 0,
-          "rfd": 3,
+          "rfd": 11,
           "tgt": 18,
           "back": [
-            6,
-            76,
-            54
+            11,
+            24,
+            107
           ],
-          "anaOld": 35,
-          "rfdOld": 3,
+          "anaOld": 5,
+          "rfdOld": 7,
           "auto": [
+            "ASC-11138",
+            "ASC-11139",
             "ASC-1546",
-            "ASC-5642",
-            "ASC-9945",
-            "ASC-9946"
+            "ASC-4987",
+            "ASC-7480",
+            "ASC-8184",
+            "ASC-8185",
+            "ASC-8187",
+            "ASC-8194",
+            "ASC-8195"
           ],
           "flag": []
         }
@@ -322,7 +322,9 @@
           "ASC-8764",
           "ASC-8765",
           "ASC-8766",
-          "ASC-9613"
+          "ASC-9613",
+          "ASC-10526",
+          "ASC-10998"
         ],
         "note": " (mostly the Dedicated Testing-Client set)"
       },
@@ -334,8 +336,8 @@
       "memoHeader": "MBI",
       "noteam": {
         "todo": 1,
-        "ana": 10,
-        "rfd": 6
+        "ana": 1,
+        "rfd": 0
       },
       "hygiene": {
         "kind": "generic"
@@ -345,29 +347,31 @@
           "name": "Pod J",
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-58",
           "devs": 5,
-          "todo": 11,
-          "genuine": 11,
-          "ana": 8,
+          "todo": 14,
+          "genuine": 14,
+          "ana": 5,
           "sdm": 0,
-          "rfd": 13,
+          "rfd": 23,
           "tgt": 15,
-          "anaOld": 11,
-          "rfdOld": 67,
+          "anaOld": 6,
+          "rfdOld": 92,
           "auto": [
             "MBI-1836",
             "MBI-1911",
-            "MBI-2353",
             "MBI-2374",
             "MBI-2433",
-            "MBI-2472",
-            "MBI-2722",
+            "MBI-2858",
+            "MBI-2860",
+            "MBI-2979",
+            "MBI-2980",
+            "MBI-3044",
             "MBI-589"
           ],
           "flag": [],
           "back": [
-            135,
-            43,
-            15
+            178,
+            46,
+            36
           ]
         }
       ]
@@ -377,7 +381,7 @@
       "file": "bi.html",
       "memoHeader": "BI",
       "noteam": {
-        "todo": 24,
+        "todo": 15,
         "ana": 0,
         "rfd": 0
       },
@@ -392,43 +396,42 @@
             "cc91c570-b16c-481d-acb8-69f327dee1e2"
           ],
           "devs": 3,
-          "todo": 3,
-          "genuine": 3,
-          "ana": 4,
-          "sdm": 0,
-          "rfd": 49,
+          "todo": 2,
+          "genuine": 2,
+          "ana": 6,
+          "sdm": 1,
+          "rfd": 147,
           "tgt": 9,
-          "anaOld": 4,
-          "rfdOld": 86,
-          "auto": [
-            "BI-16171",
-            "BI-18611"
-          ],
+          "anaOld": 27,
+          "rfdOld": 111,
+          "auto": [],
           "flag": [],
           "back": [
-            74,
-            59,
-            47
+            92,
+            61,
+            46
           ]
         },
         {
           "name": "Reports",
           "tid": "39d2f5d3-575f-40c4-8738-4aff0744ee4b",
           "devs": 5,
-          "todo": 7,
-          "genuine": 7,
-          "ana": 2,
+          "todo": 2,
+          "genuine": 2,
+          "ana": 4,
           "sdm": 0,
-          "rfd": 8,
+          "rfd": 12,
           "tgt": 15,
-          "anaOld": 0,
-          "rfdOld": 35,
-          "auto": [],
+          "anaOld": 6,
+          "rfdOld": 34,
+          "auto": [
+            "BI-19616"
+          ],
           "flag": [],
           "back": [
-            116,
-            8,
-            4
+            70,
+            53,
+            6
           ]
         }
       ]
@@ -438,9 +441,9 @@
       "file": "erp.html",
       "memoHeader": "ERP",
       "noteam": {
-        "todo": 41,
+        "todo": 32,
         "ana": 0,
-        "rfd": 1
+        "rfd": 0
       },
       "hygiene": {
         "kind": "generic"
@@ -451,18 +454,19 @@
           "tid": "031f1168-ea67-48cb-aed4-b79e339e49fe",
           "devs": 5,
           "tgt": 15,
-          "todo": 8,
-          "genuine": 8,
-          "ana": 2,
-          "sdm": 0,
-          "rfd": 2,
-          "anaOld": 35,
-          "rfdOld": 2,
+          "todo": 9,
+          "genuine": 9,
+          "ana": 1,
+          "sdm": 3,
+          "rfd": 6,
+          "anaOld": 1,
+          "rfdOld": 27,
           "auto": [
             "ERP-10033",
             "ERP-10049",
-            "ERP-10205",
-            "ERP-10879",
+            "ERP-10922",
+            "ERP-10943",
+            "ERP-5376",
             "ERP-8891",
             "ERP-8923",
             "ERP-9026",
@@ -472,7 +476,7 @@
           "back": [
             1,
             1,
-            1
+            0
           ]
         },
         {
@@ -480,13 +484,13 @@
           "tid": "b1c986c6-d98a-468f-908c-1d50a1d7babd",
           "devs": 5,
           "tgt": 15,
-          "todo": 26,
-          "genuine": 26,
-          "ana": 3,
+          "todo": 24,
+          "genuine": 24,
+          "ana": 1,
           "sdm": 0,
-          "rfd": 10,
-          "anaOld": 10,
-          "rfdOld": 17,
+          "rfd": 13,
+          "anaOld": 5,
+          "rfdOld": 34,
           "auto": [
             "ERP-10026",
             "ERP-10044",
@@ -498,14 +502,12 @@
             "ERP-10609",
             "ERP-10673",
             "ERP-10849",
-            "ERP-10889",
-            "ERP-10921",
-            "ERP-4192",
+            "ERP-11033",
+            "ERP-11088",
             "ERP-6794",
             "ERP-7025",
             "ERP-8488",
             "ERP-8489",
-            "ERP-8942",
             "ERP-8963",
             "ERP-9420",
             "ERP-9421",
@@ -517,9 +519,9 @@
           ],
           "flag": [],
           "back": [
-            7,
-            3,
-            0
+            12,
+            2,
+            2
           ]
         },
         {
@@ -529,30 +531,29 @@
           "tgt": 9,
           "todo": 12,
           "genuine": 12,
-          "ana": 2,
+          "ana": 3,
           "sdm": 0,
           "rfd": 2,
-          "anaOld": 35,
-          "rfdOld": 9,
+          "anaOld": 11,
+          "rfdOld": 20,
           "auto": [
             "ERP-10245",
             "ERP-10274",
             "ERP-10475",
-            "ERP-10845",
             "ERP-10920",
+            "ERP-11020",
             "ERP-4811",
             "ERP-5503",
             "ERP-5504",
-            "ERP-6472",
             "ERP-8929",
             "ERP-9339",
             "ERP-9417"
           ],
           "flag": [],
           "back": [
-            13,
+            1,
             0,
-            3
+            2
           ]
         },
         {
@@ -560,13 +561,13 @@
           "tid": "40e46436-d051-4fd8-b8e1-1fd82427cd47",
           "devs": 5,
           "tgt": 15,
-          "todo": 26,
-          "genuine": 26,
-          "ana": 5,
+          "todo": 25,
+          "genuine": 25,
+          "ana": 4,
           "sdm": 0,
-          "rfd": 0,
-          "anaOld": 35,
-          "rfdOld": 0,
+          "rfd": 1,
+          "anaOld": 15,
+          "rfdOld": 13,
           "auto": [
             "ERP-10028",
             "ERP-10030",
@@ -581,24 +582,21 @@
             "ERP-10218",
             "ERP-10219",
             "ERP-10220",
-            "ERP-10491",
-            "ERP-10572",
-            "ERP-10573",
-            "ERP-10579",
-            "ERP-10875",
-            "ERP-6154",
+            "ERP-10266",
+            "ERP-10912",
+            "ERP-11036",
+            "ERP-11097",
             "ERP-8055",
             "ERP-8882",
             "ERP-8883",
             "ERP-8897",
             "ERP-8953",
-            "ERP-9317",
-            "ERP-9433"
+            "ERP-9317"
           ],
           "flag": [],
           "back": [
-            8,
-            0,
+            1,
+            2,
             0
           ]
         },
@@ -607,31 +605,34 @@
           "tid": "627729c3-f30d-4d59-b9ca-df17aacbb0b3",
           "devs": 4,
           "tgt": 12,
-          "todo": 11,
-          "genuine": 9,
-          "ana": 1,
-          "sdm": 3,
-          "rfd": 9,
-          "anaOld": 35,
-          "rfdOld": 87,
+          "todo": 14,
+          "genuine": 10,
+          "ana": 4,
+          "sdm": 4,
+          "rfd": 5,
+          "anaOld": 20,
+          "rfdOld": 89,
           "auto": [
             "ERP-10011",
-            "ERP-10888",
+            "ERP-10470",
             "ERP-10917",
+            "ERP-10958",
+            "ERP-11087",
             "ERP-3879",
             "ERP-5486",
             "ERP-8141",
             "ERP-8618",
-            "ERP-8983",
-            "ERP-9998"
+            "ERP-8983"
           ],
           "flag": [
-            "ERP-10914",
-            "ERP-10924"
+            "ERP-11096",
+            "ERP-11101",
+            "ERP-11102",
+            "ERP-11108"
           ],
           "back": [
-            59,
-            2,
+            0,
+            55,
             0
           ]
         }
@@ -642,9 +643,9 @@
       "file": "crm.html",
       "memoHeader": "CRM",
       "noteam": {
-        "todo": 16,
-        "ana": 1,
-        "rfd": 7
+        "todo": 17,
+        "ana": 2,
+        "rfd": 6
       },
       "hygiene": {
         "kind": "noteam-rfd",
@@ -654,7 +655,6 @@
           "CRM-9880",
           "CRM-9883",
           "CRM-9889",
-          "CRM-9930",
           "CRM-9935"
         ],
         "note": ""
@@ -665,14 +665,15 @@
           "tid": "6d1b2f37-5881-4826-9d32-6d78cf77022e-60",
           "devs": 4,
           "tgt": 12,
-          "todo": 22,
-          "genuine": 7,
+          "todo": 23,
+          "genuine": 8,
           "ana": 10,
           "sdm": 0,
-          "rfd": 16,
-          "anaOld": 84,
-          "rfdOld": 135,
+          "rfd": 14,
+          "anaOld": 109,
+          "rfdOld": 160,
           "auto": [
+            "CRM-10024",
             "CRM-8909",
             "CRM-8916",
             "CRM-8944",
@@ -699,9 +700,9 @@
             "CRM-9340"
           ],
           "back": [
-            107,
-            18,
-            37
+            151,
+            13,
+            41
           ]
         },
         {
@@ -719,8 +720,8 @@
           "auto": [],
           "flag": [],
           "back": [
-            84,
-            14,
+            69,
+            18,
             0
           ]
         }
@@ -744,13 +745,13 @@
           "tid": "068009e7-a376-4f25-b3a3-f9cd5f6dc728",
           "devs": 3,
           "tgt": 9,
-          "todo": 25,
-          "genuine": 25,
-          "ana": 11,
+          "todo": 23,
+          "genuine": 23,
+          "ana": 7,
           "sdm": 0,
-          "rfd": 2,
-          "anaOld": 64,
-          "rfdOld": 35,
+          "rfd": 3,
+          "anaOld": 89,
+          "rfdOld": 1,
           "auto": [
             "HRIS-1038",
             "HRIS-1074",
@@ -764,11 +765,9 @@
             "HRIS-2008",
             "HRIS-2096",
             "HRIS-2297",
-            "HRIS-2325",
+            "HRIS-2301",
             "HRIS-2330",
             "HRIS-2336",
-            "HRIS-2347",
-            "HRIS-2352",
             "HRIS-758",
             "HRIS-812",
             "HRIS-858",
@@ -780,9 +779,9 @@
           ],
           "flag": [],
           "back": [
-            143,
-            72,
-            161
+            73,
+            70,
+            164
           ]
         }
       ]
@@ -792,7 +791,7 @@
       "file": "plm.html",
       "memoHeader": "PLM",
       "noteam": {
-        "todo": 9,
+        "todo": 11,
         "ana": 4,
         "rfd": 0
       },
@@ -811,8 +810,8 @@
           "ana": 1,
           "sdm": 0,
           "rfd": 1,
-          "anaOld": 7,
-          "rfdOld": 51,
+          "anaOld": 32,
+          "rfdOld": 76,
           "auto": [
             "PLM-1013",
             "PLM-103",
@@ -873,8 +872,8 @@
           "ana": 16,
           "sdm": 0,
           "rfd": 1,
-          "anaOld": 74,
-          "rfdOld": 21,
+          "anaOld": 99,
+          "rfdOld": 46,
           "auto": [
             "II-12921",
             "II-12922",
@@ -891,9 +890,9 @@
             "II-12928"
           ],
           "back": [
-            1429,
-            117,
-            66
+            1571,
+            97,
+            83
           ]
         },
         {
@@ -906,14 +905,14 @@
           "ana": 1,
           "sdm": 0,
           "rfd": 0,
-          "anaOld": 7,
+          "anaOld": 32,
           "rfdOld": 0,
           "auto": [],
           "flag": [],
           "back": [
             7,
             0,
-            1
+            0
           ]
         }
       ]
